@@ -1,0 +1,16 @@
+## ALL DEFAULT PKGs FROM ALLEGRO5
+----------------------------------
+- allegro-5                      allegro - Allegro game programming library
+- allegro_acodec-5               allegro_acodec - audio codec addon
+- allegro_audio-5                allegro_audio - audio addon
+- allegro_color-5                allegro_color - colors addon
+- allegro_dialog-5               allegro_dialog - native dialog addon
+- allegro_font-5                 allegro_font - font addon
+- allegro_image-5                allegro_image - image I/O addon
+- allegro_main-5                 allegro_main - magic main addon
+- allegro_memfile-5              allegro_memfile - memory files addon
+- allegro_physfs-5               allegro_physfs - PhysicsFS addon
+- allegro_primitives-5           allegro_primitives - primitives addon
+- allegro_ttf-5                  allegro_ttf - TrueType fonts addon
+- allegro_video-5                allegro_video - video player addon
+----------------------------------
