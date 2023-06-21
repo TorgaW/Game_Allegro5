@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <cstdint>
+#include <iostream>
 #include "../../Defines/Defines.h"
 
 class Widget
@@ -45,7 +46,7 @@ public:
         return ScreenPosition;
     }
 
-    virtual void Update(){};
+    virtual void Update();
 
     bool operator==(const Widget& b) const;
 };

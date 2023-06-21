@@ -13,6 +13,7 @@ int main(int argc, char const *argv[])
     InputManager::Get().CreateMouseInputAction("MouseX", BC_MOUSE_AXES_X);
     InputManager::Get().CreateMouseInputAction("MouseY", BC_MOUSE_AXES_Y);
     InputManager::Get().CreateMouseInputAction("MouseZ", BC_MOUSE_AXES_Z);
+    InputManager::Get().CreateMouseInputAction("UI_Mouse_Click", BC_MOUSE_LKEY);
     Game::Get().Init();
     Game::Get().Start();
     

@@ -17,6 +17,7 @@
 #include "../../WorldGeneration/ChunkManager/AChunkManager.h"
 
 class World;
+class Viewport;
 
 class Game
 {
@@ -56,6 +57,7 @@ public:
         return Disp;
     }
     Profiler *GetProfiler();
+    Viewport *GetViewport();
 };
 
 #endif

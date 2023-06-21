@@ -9,7 +9,6 @@ Widget::Widget(uint32_t id, uint64_t timestamp, std::string name)
 
 Widget::~Widget()
 {
-    delete Parent;
     for (size_t i = 0; i < Children.size(); i++)
         delete Children[i];
 }
@@ -26,6 +25,13 @@ bool Widget::AddChild(Widget *new_child)
     if(new_child == nullptr) return false;
     Children.push_back(new_child);
     return true;
+}
+
+void Widget::Update()
+{
+    for (size_t i = 0; i < Children.size(); i++)
+        Children[i]->Update();
+    std::cout << "aboba - 1\n";
 }
 
 bool Widget::operator==(const Widget &b) const

@@ -251,3 +251,8 @@ Profiler *Game::GetProfiler()
 {
     return GameWorld->GetProfiler();
 }
+
+Viewport *Game::GetViewport()
+{
+    return GameWorld->GetViewport();
+}
