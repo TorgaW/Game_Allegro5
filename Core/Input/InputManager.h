@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "../UI/Fonts/StaticFonts.h"
+// #include "../Render/Render.h"
 
 #define BC_MOUSE_LKEY 150 // left mouse button
 #define BC_MOUSE_RKEY 151 // right mouse button
@@ -73,20 +74,30 @@ private:
     bool KeyUpQueue[ALLEGRO_KEY_MAX];
     std::vector<IInputAction> InputActions;
     std::vector<IMouseInputAction> MouseInputActions;
+    std::vector<IInputAction> UIInputActions;
+    std::vector<IMouseInputAction> UIMouseInputActions;
 
     float MouseSensitivity = 0.01f;
     IMouseState Mouse;
+public:
+    bool UIInputEnabled = false;
 public:
     void UpdateKeyDown(uint8_t keycode);
     void UpdateKeyReleased(uint8_t keycode);
     void UpdateKeysInRender();
 
-    void CreateInputAction(std::string name, unsigned char key);
-    void CreateMouseInputAction(std::string name, uint8_t action_type);
-    inline size_t GetNumberOfActions() { return InputActions.size(); }
-    inline size_t GetNumberOfMouseActions() { return MouseInputActions.size(); }
-    inline IInputAction GetAction(size_t index) { return InputActions[index]; }
-    inline IMouseInputAction GetMouseAction(size_t index) { return MouseInputActions[index]; }
+    void CreateInputAction(std::string name, unsigned char key, bool for_ui = false);
+    void CreateMouseInputAction(std::string name, uint8_t action_type, bool for_ui = false);
+    inline size_t GetNumberOfActions() { return InputActions.size(); };
+    inline size_t GetNumberOfMouseActions() { return MouseInputActions.size(); };
+    inline IInputAction GetAction(size_t index) { return InputActions[index]; };
+    inline IMouseInputAction GetMouseAction(size_t index) { return MouseInputActions[index]; };
+
+    inline size_t GetNumberOfUIActions() { return UIInputActions.size(); };
+    inline size_t GetNumberOfUIMouseActions() { return UIMouseInputActions.size(); };
+    inline IInputAction GetUIAction(size_t index) { return UIInputActions[index]; };
+    inline IMouseInputAction GetUIMouseAction(size_t index) { return UIMouseInputActions[index]; };
+    
     inline int GetActionState(std::string name)
     {
         for (size_t i = 0; i < InputActions.size(); i++)
@@ -94,20 +105,41 @@ public:
             if (InputActions[i].ActionName == name)
                 return InputActions[i].EventState;
         }
+        std::cout << "Action not found: " << name << "\n";
         return -1;
-    }
+    };
+    inline int GetUIActionState(std::string name)
+    {
+        for (size_t i = 0; i < UIInputActions.size(); i++)
+        {
+            if (UIInputActions[i].ActionName == name)
+                return UIInputActions[i].EventState;
+        }
+        std::cout << "UI Action not found: " << name << "\n";
+        return -1;
+    };
+    
     inline void ResetMouseDelta()
     {
         Mouse.dx = 0.0f;
         Mouse.dy = 0.0f;
         Mouse.dz = 0.0f;
-    }
+    };
+    
     inline IMouseState GetMouseActionState(std::string name)
     {
         for (size_t i = 0; i < MouseInputActions.size(); i++)
             if(MouseInputActions[i].ActionName == name) return MouseInputActions[i].Mouse;
+        std::cout << "Mouse Action not found: " << name << "\n";
         return IMouseState();
-    }
+    };
+    inline IMouseState GetUIMouseActionState(std::string name)
+    {
+        for (size_t i = 0; i < UIMouseInputActions.size(); i++)
+            if(UIMouseInputActions[i].ActionName == name) return UIMouseInputActions[i].Mouse;
+        std::cout << "UI Mouse Action not found: " << name << "\n";
+        return IMouseState();
+    };
 
     void UpdateMouseState(ALLEGRO_MOUSE_EVENT, ALLEGRO_DISPLAY*);
     void UpdateInputActions();

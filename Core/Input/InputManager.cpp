@@ -39,22 +39,44 @@ void InputManager::UpdateKeysInRender()
     }
 }
 
-void InputManager::CreateInputAction(std::string name, unsigned char key)
+void InputManager::CreateInputAction(std::string name, unsigned char key, bool for_ui)
 {
-    for (size_t i = 0; i < InputActions.size(); i++)
-        if(InputActions[i].ActionName == name) return;
-    IInputAction t(name);
-    t.Key = key;
-    InputActions.push_back(t);
+    if(for_ui)
+    {
+        for (size_t i = 0; i < UIInputActions.size(); i++)
+            if(UIInputActions[i].ActionName == name) return;
+        IInputAction t(name);
+        t.Key = key;
+        UIInputActions.push_back(t);
+    }
+    else
+    {
+        for (size_t i = 0; i < InputActions.size(); i++)
+            if(InputActions[i].ActionName == name) return;
+        IInputAction t(name);
+        t.Key = key;
+        InputActions.push_back(t);
+    }
 }
 
-void InputManager::CreateMouseInputAction(std::string name, uint8_t action_type)
+void InputManager::CreateMouseInputAction(std::string name, uint8_t action_type, bool for_ui)
 {
-    for (size_t i = 0; i < MouseInputActions.size(); i++)
-        if(MouseInputActions[i].ActionName == name) return;
+    if(for_ui)
+    {
+        for (size_t i = 0; i < UIMouseInputActions.size(); i++)
+            if(UIMouseInputActions[i].ActionName == name) return;
     
-    IMouseInputAction t(name, action_type);
-    MouseInputActions.push_back(t);
+        IMouseInputAction t(name, action_type);
+        UIMouseInputActions.push_back(t);
+    }
+    else
+    {
+        for (size_t i = 0; i < MouseInputActions.size(); i++)
+            if(MouseInputActions[i].ActionName == name) return;
+    
+        IMouseInputAction t(name, action_type);
+        MouseInputActions.push_back(t);
+    }
 }
 
 // void InputManager::CreateMouseInputAction(std::string name, unsigned char mouse_key)
@@ -68,19 +90,40 @@ void InputManager::CreateMouseInputAction(std::string name, uint8_t action_type)
 
 void InputManager::UpdateInputActions()
 {
-    for (size_t i = 0; i < InputActions.size(); i++)
+    if(UIInputEnabled)
     {
-        InputActions[i].EventState = Keys[InputActions[i].Key];
+        for (size_t i = 0; i < UIInputActions.size(); i++)
+        {
+            UIInputActions[i].EventState = Keys[UIInputActions[i].Key];
+        }
+    }
+    else
+    {
+        for (size_t i = 0; i < InputActions.size(); i++)
+        {
+            InputActions[i].EventState = Keys[InputActions[i].Key];
+        }
     }
     // al_draw_textf(StaticFonts::Get().GetUbuntu12R(), al_map_rgb(255, 255, 255), 0, 100, 0, "{x: %f; y: %f; dx: %f; dy: %f}", Mouse.x, Mouse.y, Mouse.dx, Mouse.dy);
 }
 
 void InputManager::UpdateMouseActions()
 {
-    for (size_t i = 0; i < MouseInputActions.size(); i++)
+    if(UIInputEnabled)
     {
-        MouseInputActions[i].Mouse = Mouse;
+        for (size_t i = 0; i < UIMouseInputActions.size(); i++)
+        {
+            UIMouseInputActions[i].Mouse = Mouse;
+        }
     }
+    else
+    {
+        for (size_t i = 0; i < MouseInputActions.size(); i++)
+        {
+            MouseInputActions[i].Mouse = Mouse;
+        }
+    }
+    
 }
 
 void InputManager::UpdateMouseState(ALLEGRO_MOUSE_EVENT mouse, ALLEGRO_DISPLAY *display)
@@ -90,7 +133,8 @@ void InputManager::UpdateMouseState(ALLEGRO_MOUSE_EVENT mouse, ALLEGRO_DISPLAY *
     Mouse.x += mouse.dx * MouseSensitivity;
     Mouse.y += mouse.dy * MouseSensitivity;
     Mouse.dz += mouse.dz;
-    al_set_mouse_xy(display, 2560/2, 1440/2);
+
+    if(!UIInputEnabled) al_set_mouse_xy(display, al_get_display_width(display)/2, al_get_display_height(display)/2);
 }
 
 IMouseInputAction::IMouseInputAction(std::string name, uint8_t action_type)

@@ -35,8 +35,10 @@ void Game::GameLoop()
     player->SetPlayerCamera(GameWorld->GetScene()->GetMainCamera());
     GameWorld->GetScene()->GetMainCamera()->SetParent(player);
 
-    al_set_mouse_xy(Disp, 2560/2, 1440/2);
-    al_hide_mouse_cursor(Disp);
+    // al_set_mouse_xy(Disp, 2560/2, 1440/2);
+    // al_hide_mouse_cursor(Disp);
+
+    InputManager::Get().UIInputEnabled = true;
 
     // PerlinNoise pn(783654);
     // PerlinNoise pn(20062001);

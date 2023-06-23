@@ -1,13 +1,13 @@
 #include "Render.h"
 
-int Render::GetDisplayWidth()
+int Render::GetMonitorWidth()
 {
     ALLEGRO_MONITOR_INFO info;
     al_get_monitor_info(0, &info);
     return info.x2 - info.x1;
 }
 
-int Render::GetDisplayHeight()
+int Render::GetMonitorHeight()
 {
     ALLEGRO_MONITOR_INFO info;
     al_get_monitor_info(0, &info);
@@ -16,8 +16,8 @@ int Render::GetDisplayHeight()
 
 Rectangle2D Render::GetDisplayBoundsInWorldCoordinates()
 {
-    float mw = GetDisplayWidth();
-    float mh = GetDisplayHeight();
+    float mw = GetMonitorWidth();
+    float mh = GetMonitorHeight();
     Rectangle2D t(Vector2D(CameraTransform.Position.X - (mw/2.0) * (1.0/CameraTransform.Scale.X), 
                              CameraTransform.Position.Y - (mh/2.0) * (1.0/CameraTransform.Scale.Y)),
                              Vector2D(mw * (1.0/CameraTransform.Scale.X), mh * (1.0/CameraTransform.Scale.Y)));

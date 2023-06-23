@@ -41,8 +41,8 @@ public:
     {
         al_set_target_bitmap(al_get_backbuffer(al_get_current_display()));
     }
-    int GetDisplayWidth();
-    int GetDisplayHeight();
+    int GetMonitorWidth();
+    int GetMonitorHeight();
     Rectangle2D GetDisplayBoundsInWorldCoordinates();
     inline double GetDeltaTime()
     {
