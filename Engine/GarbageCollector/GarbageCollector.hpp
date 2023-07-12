@@ -2,6 +2,7 @@
 #define EA15C8F6_35CB_4CB8_BA7F_74AEF3983547
 
 #include "../STD_DefaultInclude.hpp"
+#include "../Lib/GCArray/GCArray.hpp"
 #include "../Object/Object.hpp"
 
 //number of kill candidates that triggers clear
@@ -66,8 +67,10 @@ private:
 class GarbageCollector
 {
 private:
-    inline static std::vector<ObjRef<Object>> gc_objects_storage = {};
+    // inline static std::vector<ObjRef<Object>> gc_objects_storage = {};
     inline static std::vector<ObjRef<Object>> gc_kill_candidates = {};
+
+    inline static GCArray<ObjRef<Object>, 10000> gc_objects_storage_t = {};
 public:
     GarbageCollector(){};
     ~GarbageCollector(){};
@@ -81,18 +84,34 @@ public:
         // if(dynamic_cast<Object*>(obj_ptr) == nullptr) return ObjRef<T>(nullptr, nullptr);
 
         std::shared_ptr<bool> t = std::make_shared<bool>(new bool(true));
-        gc_objects_storage.push_back(ObjRef<Object>(obj_ptr, t));
+        // gc_objects_storage.push_back(ObjRef<Object>(obj_ptr, t));
+        obj_ptr->SetObjStorageIndex(gc_objects_storage_t.Push(ObjRef<Object>(obj_ptr, t)));
         return ObjRef<T>(obj_ptr, t);
     }
 
     template<class T>
     static ObjRef<T> FindByName(std::string name)
     {
-        std::vector<ObjRef<Object>>::iterator result = std::find_if(gc_objects_storage.begin(), gc_objects_storage.end(),
+        auto result = std::find_if(gc_objects_storage_t.GetArray()->begin(), gc_objects_storage_t.GetArray()->end(),
         [name](ObjRef<Object> item){
             return item.IsValid() && item->GetObjName() == name;
         });
-        if(result != gc_objects_storage.end())
+        if(result != gc_objects_storage_t.GetArray()->end())
+            //this is dangerous point. if this candidate was NOT a subclass BEFORE here will be an error and core dump.
+            //please, be carefull.
+            return ObjRef<T>(dynamic_cast<T*>(result->GetObjPtr()), result->GetValidationPtr());
+        else
+            return ObjRef<T>(nullptr, nullptr);
+    }
+
+    template<class T>
+    static ObjRef<T> FindByClass(std::string base_class)
+    {
+        auto result = std::find_if(gc_objects_storage_t.GetArray()->begin(), gc_objects_storage_t.GetArray()->end(),
+        [base_class](ObjRef<Object> item){
+            return item.IsValid() && item->GetObjBaseClass() == base_class;
+        });
+        if(result != gc_objects_storage_t.GetArray()->end())
             //this is dangerous point. if this candidate was NOT a subclass BEFORE here will be an error and core dump.
             //please, be carefull.
             return ObjRef<T>(dynamic_cast<T*>(result->GetObjPtr()), result->GetValidationPtr());
@@ -103,11 +122,11 @@ public:
     template<class T>
     static ObjRef<T> FindByNameAndClass(std::string name, std::string base_class)
     {
-        std::vector<ObjRef<Object>>::iterator result = std::find_if(gc_objects_storage.begin(), gc_objects_storage.end(),
+        auto result = std::find_if(gc_objects_storage_t.GetArray()->begin(), gc_objects_storage_t.GetArray()->end(),
         [name, base_class](ObjRef<Object> item){
             return item.IsValid() && item->GetObjName() == name && item->GetObjBaseClass() == base_class;
         });
-        if(result != gc_objects_storage.end())
+        if(result != gc_objects_storage_t.GetArray()->end())
             //this is dangerous point. if this candidate was NOT a subclass BEFORE here will be an error and core dump.
             //please, be carefull.
             return ObjRef<T>(dynamic_cast<T*>(result->GetObjPtr()), result->GetValidationPtr());

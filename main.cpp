@@ -25,20 +25,25 @@ int main(int argc, char const *argv[])
     // logger.Log("hello!", "test", BC_LOG_STATUS_SUCCESS);
     // logger.Log("hello 2!", "test", BC_LOG_STATUS_SUCCESS);
     
-    for (size_t i = 0; i < 10000; i++)
-    {
-        ObjRef<Object> test = ObjectManager::CreateObject<Object>("Aboba", "class_Fedora");
-        ObjectManager::DestroyObject(test);
-    }
+    // for (size_t i = 0; i < 10000; i++)
+    // {
+    //     ObjRef<Object> test = ObjectManager::CreateObject<Object>("Aboba", "class_Fedora");
+    //     ObjectManager::DestroyObject(test);
+    // }
     // std::cout << "cc test: " << test.GetValidationPtr().use_count() << "\n";
     // ObjRef<Object> test2 = ObjectManager::CreateObject<Object>("Aboba", "class_Fedora");
     // std::cout << test->GetObjId() << "\n";
     // std::cout << test2->GetObjId() << "\n";
-    auto s1 = std::chrono::high_resolution_clock::now();
-    GarbageCollector::CheckGarbage();
-    auto s2 = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(s2 - s1);
-    std::cout << duration.count();
+    // auto s1 = std::chrono::high_resolution_clock::now();
+    // ObjRef<Object> test = ObjectManager::CreateObject<Object>("Aboba", "class_Fedora");
+    // std::cout << "users: " << test.RefCount() << "\n";
+    // ObjectManager::DestroyObject(test);
+    // GarbageCollector::CheckGarbage();
+    // std::cout << "is unique: " << test.IsUniqueRef() << "\n";
+    // std::cout << "name: " << ObjectManager::FindObject<Object>(ObjectFindMode::Class, "", "class_Fedora")->GetObjName() << "\n";
+    // auto s2 = std::chrono::high_resolution_clock::now();
+    // auto duration = std::chrono::duration_cast<std::chrono::microseconds>(s2 - s1);
+    // std::cout << duration.count() << " microseconds";
     // std::cout << test.IsUniqueRef() << "\n";
     // ObjRef<Object> find_test = ObjectManager::FindObject<Object>("Aboba");
     // std::cout << find_test->GetObjName() << "\n";

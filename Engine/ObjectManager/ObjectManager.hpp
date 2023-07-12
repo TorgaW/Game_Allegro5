@@ -5,6 +5,13 @@
 #include "../Object/Object.hpp"
 #include "../GarbageCollector/GarbageCollector.hpp"
 
+enum ObjectFindMode
+{
+    Name = 0,
+    Class = 1,
+    Both = 2,
+};
+
 class ObjectManager
 {
 private:
@@ -23,12 +30,19 @@ public:
     }
 
     template<class T>
-    static ObjRef<T> FindObject(std::string name, std::string base_class = "")
+    static ObjRef<T> FindObject(ObjectFindMode mode, std::string name = "", std::string base_class = "")
     {
-        if(base_class == "")
+        switch (mode)
+        {
+        case ObjectFindMode::Name:
             return GarbageCollector::FindByName<T>(name);
-        else
+        case ObjectFindMode::Class:
+            return GarbageCollector::FindByClass<T>(base_class);
+        case ObjectFindMode::Both:
             return GarbageCollector::FindByNameAndClass<T>(name, base_class);
+        default:
+            return ObjRef<T>(nullptr, nullptr);
+        }
     }
 
     inline static void DestroyObject(ObjRef<Object> candidate)

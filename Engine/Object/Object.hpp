@@ -60,6 +60,10 @@ public:
     //get object base class.
     inline std::string GetObjBaseClass() { return obj_base_class; };
 
+    inline int GetObjStorageIndex() { return obj_storage_index; };
+
+    inline void SetObjStorageIndex(int i) { obj_storage_index = i; };
+
 public:
     
     //called to prepare object for destruction
@@ -72,7 +76,8 @@ public:
     inline bool operator==(const Object &b) const
     {
         return b.obj_id == obj_id && b.obj_timestamp == obj_timestamp && 
-               b.obj_name == b.obj_name && b.obj_base_class == obj_base_class;
+               b.obj_name == b.obj_name && b.obj_base_class == obj_base_class &&
+               b.obj_storage_index == obj_storage_index;
     }
 
 protected:
@@ -83,6 +88,7 @@ protected:
     Object *obj_parent {nullptr};
     std::vector<Object*> obj_children;
     bool obj_pending_kill{false};
+    int obj_storage_index {-1};
 };
 
 #endif /* B09A8BC6_B336_4159_86D4_9AE3569B6AB6 */
