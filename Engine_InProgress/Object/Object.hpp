@@ -2,6 +2,7 @@
 #define B09A8BC6_B336_4159_86D4_9AE3569B6AB6
 
 #include "../STD_DefaultInclude.hpp"
+#include "../Memory/Memory.hpp"
 // #include "../GarbageCollector/GarbageCollector.hpp"
 
 // class GarbageCollector;
@@ -11,7 +12,8 @@ class Object
 public:
     //constructor
     Object(std::string name, uint64_t timestamp, uint64_t id, std::string base_class) : 
-    obj_name(name), obj_timestamp(timestamp), obj_id(id), obj_base_class(base_class) 
+    obj_name(name), obj_timestamp(timestamp), obj_id(id), obj_base_class(base_class),
+    obj_hash(timestamp+id) 
     {};
     //must be virtual destructor
     virtual ~Object(){};
@@ -64,6 +66,10 @@ public:
 
     inline void SetObjStorageIndex(int i) { obj_storage_index = i; };
 
+    inline size_t GetObjHash() { return obj_hash; };
+
+    inline void SetObjHash(size_t hash) { obj_hash = hash; };
+
 public:
     
     //called to prepare object for destruction
@@ -80,11 +86,9 @@ public:
                b.obj_storage_index == obj_storage_index;
     }
 
-    void *operator new(size_t n)
+    void *operator new(size_t n, std::string base_class)
     {
-        std::cout << "Allocating: " << n << " bytes\n";
-        void *p = malloc(n);
-        return p;
+        return MemoryPool::AllocateObject(base_class, n);
     }
 
 protected:
@@ -96,6 +100,7 @@ protected:
     std::vector<Object*> obj_children;
     bool obj_pending_kill{false};
     int obj_storage_index {-1};
+    size_t obj_hash {0u};
 };
 
 #endif /* B09A8BC6_B336_4159_86D4_9AE3569B6AB6 */

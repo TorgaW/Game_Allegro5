@@ -25,6 +25,24 @@ void Game::GameLoop()
     // AStaticObject *sto = ObjectManager::Get().CreateObject<AStaticObject>("static_0", "AStaticObject");
     // sto->Transform.Scale = Vector2D(10.0f, 10.0f);
     // GameWorld->AddToWorld(sto);
+    std::vector<AObject*> test;
+    for (size_t i = 0; i < 50000; i++)
+    {
+        test.push_back(ObjectManager::Get().CreateObject<AObject>("chunk_manager_"+std::to_string(i), "AChunkManager"));
+    }
+    
+    auto s1 = std::chrono::high_resolution_clock::now();
+
+    for (size_t i = 0; i < test.size(); i++)
+    {
+        test[i]->Begin();
+    }
+    
+
+    auto s2 = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(s2 - s1);
+    std::cout << duration.count() << " microseconds";
+
 
     AChunkManager *chunks = ObjectManager::Get().CreateObject<AChunkManager>("chunk_manager", "AChunkManager");
     GameWorld->AddToWorld(chunks);
