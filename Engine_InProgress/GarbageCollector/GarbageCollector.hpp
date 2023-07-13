@@ -33,7 +33,7 @@ public:
 
 public:
     //returns current ref state.
-    inline bool IsValid() { return *is_obj_ptr_valid; };
+    inline bool IsValid() { return is_obj_ptr_valid == nullptr ? false : *is_obj_ptr_valid; };
     //returns pointer to the stored object.
     inline T *operator->() { return obj_ptr; }
 
@@ -86,6 +86,7 @@ public:
         std::shared_ptr<bool> t = std::make_shared<bool>(new bool(true));
         // gc_objects_storage.push_back(ObjRef<Object>(obj_ptr, t));
         obj_ptr->SetObjStorageIndex(gc_objects_storage_t.Push(ObjRef<Object>(obj_ptr, t)));
+        obj_ptr->Begin();
         return ObjRef<T>(obj_ptr, t);
     }
 

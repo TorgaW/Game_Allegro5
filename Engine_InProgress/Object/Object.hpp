@@ -27,14 +27,14 @@ public:
      * 
      * @param delta time between frames.
      */
-    virtual void Update(float delta){};
+    virtual void Update(double delta){};
 
     /**
      * @brief called every frame after Update() function.
      * 
      * @param delta time between frames.
      */
-    virtual void Draw(float delta){};
+    virtual void Draw(double delta){};
 
     /**
      * @brief called once when object marked as pending kill. in other words - before destruction.
@@ -78,6 +78,13 @@ public:
         return b.obj_id == obj_id && b.obj_timestamp == obj_timestamp && 
                b.obj_name == b.obj_name && b.obj_base_class == obj_base_class &&
                b.obj_storage_index == obj_storage_index;
+    }
+
+    void *operator new(size_t n)
+    {
+        std::cout << "Allocating: " << n << " bytes\n";
+        void *p = malloc(n);
+        return p;
     }
 
 protected:

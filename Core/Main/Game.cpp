@@ -38,7 +38,7 @@ void Game::GameLoop()
     // al_set_mouse_xy(Disp, 2560/2, 1440/2);
     // al_hide_mouse_cursor(Disp);
 
-    InputManager::Get().UIInputEnabled = true;
+    InputManager::Get().UIInputEnabled = false;
 
     // PerlinNoise pn(783654);
     // PerlinNoise pn(20062001);

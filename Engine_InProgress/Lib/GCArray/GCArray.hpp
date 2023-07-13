@@ -11,6 +11,8 @@ private:
     std::array<_Type, _n_size> _array {};
     std::stack<int> _stack {};
     std::array<bool, _n_size> _indexes;
+    int last_element {-1};
+    int prev_last_element {-1};
     int count {0};
 public:
     GCArray()
@@ -26,6 +28,8 @@ public:
 
     inline std::array<_Type, _n_size> *GetArray() { return &_array; };
     inline std::stack<_Type> *GetStack() { return &_stack; };
+    inline std::array<bool, _n_size> *GetIndexes() { return &_indexes; };
+    inline int GetlastElement() { return last_element; };
     inline int Count() { return count; };
 
     _Type &operator[](int index)

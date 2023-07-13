@@ -6,6 +6,7 @@
 #include <chrono>
 #include <string>
 #include <cstdint>
+#include <cmath>
 #include <vector>
 #include <array>
 #include <stack>
