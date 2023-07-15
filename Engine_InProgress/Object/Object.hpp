@@ -32,13 +32,6 @@ public:
     virtual void Update(double delta){};
 
     /**
-     * @brief called every frame after Update() function.
-     * 
-     * @param delta time between frames.
-     */
-    virtual void Draw(double delta){};
-
-    /**
      * @brief called once when object marked as pending kill. in other words - before destruction.
      */
     virtual void End(){};

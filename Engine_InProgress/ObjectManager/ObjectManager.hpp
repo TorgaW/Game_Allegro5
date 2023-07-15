@@ -51,7 +51,8 @@ public:
         return ObjRef<T>(nullptr, nullptr);
     }
 
-    inline static void DestroyObject(ObjRef<Object> candidate)
+    template<class T>
+    static void DestroyObject(ObjRef<T> candidate)
     {   
         // candidate->MarkPendingKill();
         MemoryPool::FreeObject(candidate.GetObjPtr());

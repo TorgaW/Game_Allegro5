@@ -1,5 +1,5 @@
-#include "ObjectManager/ObjectManager.hpp"
-
+#include "Scene/Scene.hpp"
+#include "SceneManager/SceneManager.hpp"
 
 int main(int argc, char const *argv[])
 {
@@ -18,7 +18,7 @@ int main(int argc, char const *argv[])
     //     refs.push_back(ObjectManager::CreateObject<Object>("Aboba", "class_Object"));
     // }
 
-    auto t = ObjectManager::CreateObject<Object>("Aboba", "class_Object");
+    auto t = SceneManager::CreateObject<SceneObject>("Aboba", "class_Object");
 
     auto s1 = std::chrono::high_resolution_clock::now();
 
