@@ -21,16 +21,35 @@ public:
     ~ObjectManager(){};
 
     template<class T>
-    static ObjRef<T> CreateObject(std::string name, std::string base_class)
+    static ObjRef<T> CreateObject(const std::string& name, const std::string& base_class)
     {
-        obj_last_id++;
-        uint64_t timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
         if(!MemoryPool::IsSpaceAvailable(base_class)) 
             return ObjRef<T>();
-        T *p = new(base_class) T(name, timestamp, obj_last_id, base_class);
+        obj_last_id++;
+        uint64_t timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        ObjectSignature sg(name, timestamp, obj_last_id);
+
+        T *p = new(base_class) T(base_class, sg);
         if(p == nullptr)
             return ObjRef<T>();
         MemoryPool::SetupObject(p);
+        return MemoryPool::CreateRef<T>(p);
+    }
+
+    template<class T>
+    static ObjRef<T> CopyObject(ObjRef<T> candidate, std::string name)
+    {
+        if(!MemoryPool::IsSpaceAvailable(candidate.GetObjPtr()->GetObjBaseClass())) 
+            return ObjRef<T>();
+        obj_last_id++;
+        uint64_t timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        ObjectSignature sg(name, timestamp, obj_last_id);
+
+        T *p = new(candidate.GetObjPtr()->GetObjBaseClass()) T(*(candidate.GetObjPtr()));
+        if(p == nullptr)
+            return ObjRef<T>();
+        MemoryPool::SetupObject(p);
+        p->SetSignature(sg);
         return MemoryPool::CreateRef<T>(p);
     }
 
@@ -52,10 +71,10 @@ public:
     }
 
     template<class T>
-    static void DestroyObject(ObjRef<T> candidate)
+    static inline bool DestroyObject(ObjRef<T> candidate)
     {   
         // candidate->MarkPendingKill();
-        MemoryPool::FreeObject(candidate.GetObjPtr());
+        return MemoryPool::FreeObject(candidate.GetObjPtr());
     };
 };
 
