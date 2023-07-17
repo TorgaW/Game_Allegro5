@@ -66,8 +66,7 @@ add_executable(BC_GAME_PROJECT ${SOURCE_FILES})
 pkg_check_modules(ALLEGRO5 REQUIRED allegro-5 allegro_font-5 allegro_ttf-5 allegro_image-5 allegro_primitives-5)
 
 # Link libraries
-target_link_libraries(BC_GAME_PROJECT ${ALLEGRO5_LIBRARIES}
-"/usr/local/lib/liballegro_font.so.5.2")
+target_link_libraries(BC_GAME_PROJECT ${ALLEGRO5_LIBRARIES})
 
 target_link_libraries( BC_GAME_PROJECT Boost::thread Boost::system)
 

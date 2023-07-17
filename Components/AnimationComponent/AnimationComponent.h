@@ -2,6 +2,7 @@
 #define BB819111_7C4C_4C98_92EF_4C599DEAD8C3
 
 #include <allegro5/allegro5.h>
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
