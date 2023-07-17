@@ -12,8 +12,8 @@ public:
     bool IsHidden {false};
 public:
     //constructor
-    SceneObject(std::string name, uint64_t timestamp, uint64_t id, std::string base_class) : 
-    Object(name, timestamp, id, base_class)
+    SceneObject(const std::string& base_class, ObjectSignature obj_sign) : 
+    Object(base_class, obj_sign)
     {};
     //must be virtual destructor
     virtual ~SceneObject(){};

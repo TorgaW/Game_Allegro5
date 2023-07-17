@@ -10,10 +10,15 @@ public:
     std::vector<ObjRef<SceneObject>> scene_object_buffer {};
     size_t scene_max_buffer_size {0};
 public:
-    Scene(std::string name):scene_name(name){};
+    Scene(std::string name):scene_name(name)
+    {
+        scene_object_buffer.reserve(500);
+    };
     Scene(std::string name, size_t max_buffer_size):
     scene_name(name), scene_max_buffer_size(max_buffer_size)
-    {};
+    {
+        scene_object_buffer.reserve(max_buffer_size);
+    };
     ~Scene(){};
 };
 
