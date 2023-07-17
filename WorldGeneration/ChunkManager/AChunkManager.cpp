@@ -35,16 +35,16 @@ void AChunkManager::GTick(float delta_time)
     // al_draw_bitmap(Chunk, 0, 0, 0);
     // al_draw_bitmap(GrassTileSample, 0, 0, 0);
     // al_draw_bitmap(WaterTileSample, Render::Get().GetDisplayBoundsInWorldCoordinates().p01.X - 16, Render::Get().GetDisplayBoundsInWorldCoordinates().p01.Y, 0);
-    al_set_target_bitmap(Chunk);
-    ALLEGRO_SHADER *p = Render::Get().GetShaders()->GetShader("Test #1");
-    al_use_shader(p);
+    // al_set_target_bitmap(Chunk);
+    // ALLEGRO_SHADER *p = Render::Get().GetShaders()->GetShader("Test #1");
+    // al_use_shader(p);
     // al_set_shader_int("octaves", 1);
     // al_set_shader_float("scale", 1.0f);
     // al_set_shader_int("seed", 123456);
-    al_draw_bitmap(Chunk, 0, 0, 0);
-    al_use_shader(nullptr);
-    Render::Get().SetViewportAsRenderTarget();
-    al_draw_bitmap(Chunk, 0, 0, 0);
+    // al_draw_bitmap(Chunk, 0, 0, 0);
+    // al_use_shader(nullptr);
+    // Render::Get().SetViewportAsRenderTarget();
+    // al_draw_bitmap(Chunk, 0, 0, 0);
     // Rectangle2D MonitorBounds = Render::Get().GetDisplayBoundsInWorldCoordinates();
     // for (size_t i = 0; i < Chunks.size(); i++)
     // {

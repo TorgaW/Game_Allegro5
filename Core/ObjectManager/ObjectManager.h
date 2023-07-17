@@ -2,6 +2,7 @@
 #define OBJECTMANAGER_H
 
 #include <vector>
+#include <algorithm>
 #include <chrono>
 #include "../Object/AObject.h"
 #include "../Statics/Statics.h"
