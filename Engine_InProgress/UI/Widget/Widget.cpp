@@ -31,6 +31,7 @@ bool Widget::AttachChild(Ref<Widget> child)
 
     widget_children.emplace_back(child);
     child->widget_parent = MemoryPool::CreateRef(this);
+    child->CallBegin();
     return true;
 }
 

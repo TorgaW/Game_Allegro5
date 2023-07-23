@@ -46,6 +46,7 @@ public:
     template<class T>
     static void AddToViewport(Ref<T> widget)
     {
+        widget->CallBegin();
         widgets_storage.push_back(widget);
     }
 };
