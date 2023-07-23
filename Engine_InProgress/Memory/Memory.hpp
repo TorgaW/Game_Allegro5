@@ -21,34 +21,42 @@ const size_t mem_alloc_default_value = 100u;
  * @tparam T type
  */
 template<class T>
-class ObjRef
+class Ref
 {
 public:
-    ObjRef()
+    Ref()
     {
         is_obj_ptr_valid = nullptr;
         obj_ptr = nullptr;
     }
 
-    ObjRef(T *ptr, bool *validation_flag_ptr, size_t _hash) :
+    Ref(T *ptr, bool *validation_flag_ptr, size_t _hash) :
     is_obj_ptr_valid(validation_flag_ptr), obj_ptr(ptr), hash(_hash)
     {}
 
-    ~ObjRef(){};
+    ~Ref(){};
+
+    template<class F>
+    Ref(Ref<F>& rhs)
+    {
+        is_obj_ptr_valid = rhs.GetValidationPtr();
+        obj_ptr = static_cast<T*>(rhs.GetObjPtr());
+        hash = rhs.GetHash();
+    }
 
 public:
     //returns current ref state. can be falsy positive if new object allocated on the same place in memory.
     inline bool IsValid() { return is_obj_ptr_valid == nullptr ? false : !(*is_obj_ptr_valid); };
 
     //returns current ref state. can not be falsy positive but a bit slower.
-    inline bool IsValidStrict() { return is_obj_ptr_valid == nullptr ? false : (!(*is_obj_ptr_valid) && obj_ptr->GetObjHash() == hash); };
+    inline bool IsValidStrict() { return is_obj_ptr_valid == nullptr ? false : (!(*is_obj_ptr_valid) && obj_ptr->GetHash() == hash); };
 
     inline size_t GetHash() { return hash; };
 
     //returns pointer to the stored object.
     inline T *operator->() { return obj_ptr; };
 
-    inline bool operator==(const ObjRef &r) const
+    inline bool operator==(const Ref &r) const
     {
        return (*obj_ptr) == (*(r.obj_ptr));
     };
@@ -98,7 +106,7 @@ public:
     inline bool IsFull() { return allocated == max_objects; };
 
     //allocates memory for n objects
-    void Allocate(std::string base_class, size_t class_size);
+    void Allocate(std::string obj_class, size_t class_size);
 
     //get pointer to free space
     void *AllocateObject();
@@ -107,8 +115,8 @@ public:
     template<class _T>
     bool FreeObject(_T *object_ptr)
     {
-        if(object_ptr->GetObjStorageIndex() < 0) return false;
-        b_array[object_ptr->GetObjStorageIndex()] = true;
+        if(object_ptr->GetMemStorageIndex() < 0) return false;
+        b_array[object_ptr->GetMemStorageIndex()] = true;
         allocated--;
         return true;
     }
@@ -122,7 +130,7 @@ public:
         {
             if(!b_array[i] && *((_T*)(begin + byte_size*i)) == *obj_ptr)
             {
-                obj_ptr->SetObjStorageIndex(i);
+                obj_ptr->SetMemStorageIndex(i);
                 return true;
             }
         }
@@ -130,16 +138,16 @@ public:
     }
 
     template<class _T>
-    ObjRef<_T> CreateRef(_T *obj_ptr)
+    Ref<_T> CreateRef(_T *obj_ptr)
     {
         for (size_t i = 0; i < max_objects; i++)
         {
             if(!b_array[i] && *((_T*)(begin + byte_size*i)) == *obj_ptr)
             {
-                return ObjRef<_T>(obj_ptr, b_array+i, obj_ptr->GetObjHash());
+                return Ref<_T>(obj_ptr, b_array+i, obj_ptr->GetHash());
             }
         }
-        return ObjRef<_T>();
+        return Ref<_T>();
     }
 
     void PrintData(){};
@@ -153,25 +161,25 @@ public:
     MemoryPool(){};
     ~MemoryPool(){};
 
-    static void *AllocateObject(std::string base_class, size_t class_size)
+    static void *AllocateObject(std::string obj_class, size_t class_size)
     {
-        auto mem_pool = object_pools.find(base_class);
+        auto mem_pool = object_pools.find(obj_class);
         if(mem_pool != object_pools.end())
         {
             return (mem_pool->second.AllocateObject());
         }
         else
         {
-            object_pools.insert({base_class, ObjectMemPool()});
-            object_pools[base_class].Allocate(base_class, class_size);
-            return (object_pools[base_class].AllocateObject());
+            object_pools.insert({obj_class, ObjectMemPool()});
+            object_pools[obj_class].Allocate(obj_class, class_size);
+            return (object_pools[obj_class].AllocateObject());
         }
     }
 
     template<class T>
     static bool FreeObject(T *obj_ptr)
     {
-        auto mem_pool = object_pools.find(obj_ptr->GetObjBaseClass());
+        auto mem_pool = object_pools.find(obj_ptr->GetClass());
         if(mem_pool != object_pools.end())
             return mem_pool->second.FreeObject(obj_ptr);
         else
@@ -181,7 +189,7 @@ public:
     template<class T>
     static bool SetupObject(T *obj_ptr)
     {
-        auto mem_pool = object_pools.find(obj_ptr->GetObjBaseClass());
+        auto mem_pool = object_pools.find(obj_ptr->GetClass());
         if(mem_pool != object_pools.end())
             return mem_pool->second.SetupObject(obj_ptr);
         else
@@ -189,16 +197,16 @@ public:
     }
 
     template<class T>
-    static ObjRef<T> CreateRef(T *obj_ptr)
+    static Ref<T> CreateRef(T *obj_ptr)
     {
-        auto mem_pool = object_pools.find(obj_ptr->GetObjBaseClass());
+        auto mem_pool = object_pools.find(obj_ptr->GetClass());
         if(mem_pool != object_pools.end())
             return mem_pool->second.CreateRef(obj_ptr);
         else
-            return ObjRef<T>();
+            return Ref<T>();
     }
 
-    static bool IsSpaceAvailable(std::string base_class);
+    static bool IsSpaceAvailable(std::string obj_class);
 
 };
 

@@ -3,21 +3,23 @@
 
 #include "Vector.hpp"
 
-struct Transform2
+struct Transform
 {
     Vec2 position;
+    Vec2 size;
     Vec2 scale;
     float rotation;
 
-    Transform2():rotation(0.0f){};
-    Transform2(Vec2 _pos, Vec2 _scale, float _rot) : 
-    position(_pos), scale(_scale), rotation(_rot)
+    Transform():rotation(0.0f){};
+    Transform(Vec2 _pos, Vec2 _scale, Vec2 _size, float _rot) : 
+    position(_pos), size(_size), scale(_scale), rotation(_rot)
     {};
 
     inline void Reset()
     {
         position.Reset();
         scale.Reset();
+        size.Reset();
         rotation = 0.0f;
     }
 
