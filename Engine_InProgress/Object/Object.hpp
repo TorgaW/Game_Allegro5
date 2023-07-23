@@ -93,6 +93,14 @@ public:
 
     // inline bool IsMarkedPendingKill() { return obj_pending_kill; };
 
+    //do not override this method
+    virtual void CallBegin()
+    {
+        if(begin_done) return;
+        Begin();
+        begin_done = true;
+    };
+
 //operators
 public:
     inline bool operator==(const Object &b) const
@@ -116,6 +124,9 @@ protected:
     // std::vector<Object*> obj_children;
     // bool obj_pending_kill{false};
     int obj_storage_index {-1};
+
+private:
+    bool begin_done {false};
 };
 
 #endif /* B09A8BC6_B336_4159_86D4_9AE3569B6AB6 */

@@ -5,8 +5,10 @@
 
 class CanvasWidget : public Widget
 {
-private:
-    float target_width {1000.f}; //pixels
+public:
+    float max_width {1000.0f}; //pixels
+    float min_width {0.0f}; //pixels
+    float target_width {max_width}; //pixels
     float resize_speed {500.f}; //abstract value
     ALLEGRO_COLOR canvas_border_color {al_map_rgb_f(0.5f, 0.01f, 0.05f)};
     float canvas_border_thickness {3.0f}; //pixels
@@ -17,9 +19,15 @@ public:
     ~CanvasWidget(){};
 
     /**
+     * @brief called once when widget is created.
+     */
+    virtual void Begin();
+
+    /**
      * @brief called every frame after Update(). used to draw graphics.
      */
     virtual void Draw(float delta);
+
 };
 
 
