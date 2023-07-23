@@ -1,8 +1,8 @@
 #include "Memory.hpp"
 
-void ObjectMemPool::Allocate(std::string base_class, size_t class_size)
+void ObjectMemPool::Allocate(std::string obj_class, size_t class_size)
 {
-    auto option = mem_alloc_options.find(base_class);
+    auto option = mem_alloc_options.find(obj_class);
     if (option != mem_alloc_options.end())
     {
         begin = static_cast<char *>(malloc((option->second) * class_size));
@@ -50,9 +50,9 @@ void *ObjectMemPool::AllocateObject()
     return nullptr;
 }
 
-bool MemoryPool::IsSpaceAvailable(std::string base_class)
+bool MemoryPool::IsSpaceAvailable(std::string obj_class)
 {
-    auto mem_pool = object_pools.find(base_class);
+    auto mem_pool = object_pools.find(obj_class);
     if(mem_pool == object_pools.end()) return true;
     return !(mem_pool->second.IsFull());
 }

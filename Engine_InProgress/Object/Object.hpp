@@ -23,12 +23,18 @@ struct ObjectSignature
     }
 };
 
+// struct ObjectMetaData
+// {
+//     int obj_storage_index {-1};
+//     int obj_scene_index
+// };
+
 class Object
 {
 public:
     //constructor
-    Object(const std::string& base_class, const ObjectSignature& obj_sign) : 
-    obj_base_class(base_class), obj_signature(obj_sign)
+    Object(const std::string& _obj_class, const ObjectSignature& obj_sign) : 
+    obj_class(_obj_class), obj_signature(obj_sign)
     {};
     //must be virtual destructor
     virtual ~Object(){};
@@ -44,7 +50,7 @@ public:
      * 
      * @param delta time between frames.
      */
-    virtual void Update(double delta){};
+    virtual void Update(float delta){};
 
     /**
      * @brief called once when object marked as pending kill. in other words - before destruction.
@@ -62,42 +68,42 @@ public:
 
 public:
     //get object name.
-    inline std::string GetObjName() { return obj_signature.obj_name; };
+    inline std::string GetName() { return obj_signature.obj_name; };
     //get object timestamp.
-    inline uint64_t GetObjTimestamp() { return obj_signature.obj_timestamp; };
+    inline uint64_t GetTimestamp() { return obj_signature.obj_timestamp; };
     //get object id.
-    inline uint64_t GetObjId() { return obj_signature.obj_id; };
+    inline uint64_t GetId() { return obj_signature.obj_id; };
     //get object base class.
-    inline std::string GetObjBaseClass() { return obj_base_class; };
+    inline std::string GetClass() { return obj_class; };
 
-    inline int GetObjStorageIndex() { return obj_storage_index; };
+    inline int GetMemStorageIndex() { return obj_storage_index; };
 
-    inline void SetObjStorageIndex(int i) { obj_storage_index = i; };
+    inline void SetMemStorageIndex(int i) { obj_storage_index = i; };
 
-    inline size_t GetObjHash() { return obj_signature.obj_hash; };
+    inline size_t GetHash() { return obj_signature.obj_hash; };
 
-    inline void SetObjHash(size_t hash) { obj_signature.obj_hash = hash; };
+    inline void SetHash(size_t hash) { obj_signature.obj_hash = hash; };
 
     inline void SetSignature(const ObjectSignature _new_sign) { obj_signature = _new_sign; };
 
 public:
     
     //called to prepare object for destruction
-    void MarkPendingKill();
+    // void MarkPendingKill();
 
-    inline bool IsMarkedPendingKill() { return obj_pending_kill; };
+    // inline bool IsMarkedPendingKill() { return obj_pending_kill; };
 
 //operators
 public:
     inline bool operator==(const Object &b) const
     {
-        return obj_signature == b.obj_signature && b.obj_base_class == obj_base_class &&
+        return obj_signature == b.obj_signature && b.obj_class == obj_class &&
                b.obj_storage_index == obj_storage_index;
     }
 
-    void *operator new(size_t n, const std::string& base_class)
+    void *operator new(size_t n, const std::string& _obj_class)
     {
-        return MemoryPool::AllocateObject(base_class, n);
+        return MemoryPool::AllocateObject(_obj_class, n);
     }
 
 protected:
@@ -105,10 +111,10 @@ protected:
     // uint64_t obj_timestamp;
     // uint64_t obj_id;
     ObjectSignature obj_signature;
-    std::string obj_base_class;
-    Object *obj_parent {nullptr};
-    std::vector<Object*> obj_children;
-    bool obj_pending_kill{false};
+    std::string obj_class;
+    // Object *obj_parent {nullptr};
+    // std::vector<Object*> obj_children;
+    // bool obj_pending_kill{false};
     int obj_storage_index {-1};
 };
 

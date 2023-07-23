@@ -5,6 +5,7 @@
 #include <memory>
 #include <chrono>
 #include <string>
+#include <sstream>
 #include <cstdint>
 #include <cmath>
 #include <vector>

@@ -5,12 +5,12 @@
 #include "../Object/Object.hpp"
 #include "../Memory/Memory.hpp"
 
-enum ObjectFindMode
-{
-    Name = 0,
-    Class = 1,
-    Both = 2,
-};
+// enum ObjectFindMode
+// {
+//     _Name = 0,
+//     _Class = 1,
+//     _Both = 2,
+// };
 
 class ObjectManager
 {
@@ -21,57 +21,57 @@ public:
     ~ObjectManager(){};
 
     template<class T>
-    static ObjRef<T> CreateObject(const std::string& name, const std::string& base_class)
+    static Ref<T> CreateObject(const std::string& name, const std::string& obj_class)
     {
-        if(!MemoryPool::IsSpaceAvailable(base_class)) 
-            return ObjRef<T>();
+        if(!MemoryPool::IsSpaceAvailable(obj_class)) 
+            return Ref<T>();
         obj_last_id++;
         uint64_t timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
         ObjectSignature sg(name, timestamp, obj_last_id);
 
-        T *p = new(base_class) T(base_class, sg);
+        T *p = new(obj_class) T(obj_class, sg);
         if(p == nullptr)
-            return ObjRef<T>();
+            return Ref<T>();
         MemoryPool::SetupObject(p);
         return MemoryPool::CreateRef<T>(p);
     }
 
     template<class T>
-    static ObjRef<T> CopyObject(ObjRef<T> candidate, std::string name)
+    static Ref<T> CopyObject(Ref<T> candidate, std::string name)
     {
-        if(!MemoryPool::IsSpaceAvailable(candidate.GetObjPtr()->GetObjBaseClass())) 
-            return ObjRef<T>();
+        if(!MemoryPool::IsSpaceAvailable(candidate.GetObjPtr()->GetClass())) 
+            return Ref<T>();
         obj_last_id++;
         uint64_t timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
         ObjectSignature sg(name, timestamp, obj_last_id);
 
-        T *p = new(candidate.GetObjPtr()->GetObjBaseClass()) T(*(candidate.GetObjPtr()));
+        T *p = new(candidate.GetObjPtr()->GetClass()) T(*(candidate.GetObjPtr()));
         if(p == nullptr)
-            return ObjRef<T>();
+            return Ref<T>();
         MemoryPool::SetupObject(p);
         p->SetSignature(sg);
         return MemoryPool::CreateRef<T>(p);
     }
 
-    template<class T>
-    static ObjRef<T> FindObject(ObjectFindMode mode, std::string name = "", std::string base_class = "")
-    {
+    // template<class T>
+    // static Ref<T> FindObject(ObjectFindMode mode, std::string name = "", std::string obj_class = "")
+    // {
         // switch (mode)
         // {
         // case ObjectFindMode::Name:
         //     return GarbageCollector::FindByName<T>(name);
         // case ObjectFindMode::Class:
-        //     return GarbageCollector::FindByClass<T>(base_class);
+        //     return GarbageCollector::FindByClass<T>(obj_class);
         // case ObjectFindMode::Both:
-        //     return GarbageCollector::FindByNameAndClass<T>(name, base_class);
+        //     return GarbageCollector::FindByNameAndClass<T>(name, obj_class);
         // default:
-        //     return ObjRef<T>(nullptr, nullptr);
+        //     return Ref<T>(nullptr, nullptr);
         // }
-        return ObjRef<T>(nullptr, nullptr);
-    }
+    //     return Ref<T>(nullptr, nullptr);
+    // }
 
     template<class T>
-    static inline bool DestroyObject(ObjRef<T> candidate)
+    static inline bool DestroyObject(Ref<T> candidate)
     {   
         // candidate->MarkPendingKill();
         return MemoryPool::FreeObject(candidate.GetObjPtr());

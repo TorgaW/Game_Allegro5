@@ -7,13 +7,13 @@
 class SceneObject : public Object
 {
 public:
-    Transform2 transform {};
+    Transform ObjectTransform {};
     bool IsOnScene {false};
     bool IsHidden {false};
 public:
     //constructor
-    SceneObject(const std::string& base_class, ObjectSignature obj_sign) : 
-    Object(base_class, obj_sign)
+    SceneObject(const std::string& _obj_class, ObjectSignature obj_sign) : 
+    Object(_obj_class, obj_sign)
     {};
     //must be virtual destructor
     virtual ~SceneObject(){};
