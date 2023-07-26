@@ -28,7 +28,7 @@ public:
     Widget(const std::string& _obj_class, const ObjectSignature& obj_sign) :
     Object(_obj_class, obj_sign)
     {};
-    ~Widget(){};
+    virtual ~Widget(){};
 
     /**
      * @brief called once when widget is created.

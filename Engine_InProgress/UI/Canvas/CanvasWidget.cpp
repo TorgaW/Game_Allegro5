@@ -3,7 +3,7 @@
 void CanvasWidget::Begin()
 {
     target_width = max_width;
-    canvas_input.AddKeyboardActionBinding("test_input", KeyboardEventType::Hold, this, &CanvasWidget::TestInput);
+    canvas_input.AddKeyboardActionBinding("test_input", KeyboardEventType::Down, this, &CanvasWidget::TestInput);
 }
 
 void CanvasWidget::Update(float delta)

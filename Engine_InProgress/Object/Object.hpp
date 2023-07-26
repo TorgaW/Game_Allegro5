@@ -97,12 +97,17 @@ public:
     // inline bool IsMarkedPendingKill() { return obj_pending_kill; };
 
     //do not override this method
-    virtual void CallBegin()
+    virtual void CallBegin() final
     {
         if(begin_done) return;
         Begin();
         begin_done = true;
     };
+
+    void AttachObjectChild(Ref<Object> child);
+    void DetachObjectChild(Ref<Object> child);
+
+    std::vector<Ref<Object>> DeepCollectObjectChildren();
 
 //operators
 public:
@@ -123,8 +128,8 @@ protected:
     // uint64_t obj_id;
     ObjectSignature obj_signature;
     std::string obj_class;
-    // Object *obj_parent {nullptr};
-    // std::vector<Object*> obj_children;
+    Ref<Object> obj_parent;
+    std::vector<Ref<Object>> obj_children {};
     // bool obj_pending_kill{false};
     int obj_storage_index {-1};
 
