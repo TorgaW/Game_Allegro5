@@ -49,6 +49,31 @@ public:
         widget->CallBegin();
         widgets_storage.push_back(widget);
     }
+
+    template<class T>
+    static void RemoveFromViewport(Ref<T> widget)
+    {
+        widgets_storage.erase(std::remove_if(widgets_storage.begin(), widgets_storage.end(),
+        [widget](Ref<T> t_widget)
+        {
+            return widget == t_widget;
+        }),
+        widgets_storage.end());
+    }
+
+    template<class T>
+    static Ref<T> FindWidgetInViewport(std::string name, std::string widget_class)
+    {
+        auto r = std::find_if(widgets_storage.begin(), widgets_storage.end(), 
+        [name, widget_class](Ref<T> t_widget)
+        {
+            return t_widget->GetName() == name && t_widget->GetClass() == widget_class;
+        });
+        if(r != widgets_storage.end())
+            return (*r);
+        else
+            return Ref<T>();
+    }   
 };
 
 

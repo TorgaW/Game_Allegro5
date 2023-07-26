@@ -14,7 +14,7 @@ void Game::InitGame()
     al_change_directory(al_path_cstr(p, ALLEGRO_NATIVE_PATH_SEP));
     al_destroy_path(p);
 
-    game_timer = al_create_timer(1.0 / 5000.0);
+    game_timer = al_create_timer(1.0 / 144.0);
     game_event_queue = al_create_event_queue();
     al_set_new_display_option(ALLEGRO_VSYNC, 2, ALLEGRO_SUGGEST);
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
@@ -29,7 +29,7 @@ void Game::InitGame()
     InputManager::Init();
     EngineDebugger::Init();
 
-    InputManager::CreateKeyboardInputAction("test_input", ALLEGRO_KEY_W);
+    InputManager::CreateKeyInputAction("test_input", BC_MOUSE_LKEY);
 
     game_is_setup = true;
 }
@@ -64,29 +64,60 @@ void Game::LoopGame()
                 EndGame();
                 break;
             }
-            InputManager::UpdateKeyboardKeyDown(current_event.keyboard.keycode);
-            InputManager::UpdateKeyboardActions();
+            InputManager::UpdateInputKeyDown(current_event.keyboard.keycode);
+            InputManager::UpdateKeyActions();
         }
         else if (current_event.type == ALLEGRO_EVENT_KEY_UP)
         {
-            InputManager::UpdateKeyboardKeyUp(current_event.keyboard.keycode);
-            InputManager::UpdateKeyboardActions();
+            InputManager::UpdateInputKeyUp(current_event.keyboard.keycode);
+            InputManager::UpdateKeyActions();
+        }
+        else if(current_event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+        {
+            if(current_event.mouse.button != 0)
+            {
+                if(current_event.mouse.button == 1)
+                    InputManager::UpdateInputKeyDown(BC_MOUSE_LKEY);
+                else if (current_event.mouse.button == 2)
+                    InputManager::UpdateInputKeyDown(BC_MOUSE_RKEY);
+                else if (current_event.mouse.button == 3)
+                    InputManager::UpdateInputKeyDown(BC_MOUSE_MIDKEY);
+                
+                InputManager::UpdateKeyActions();
+            }
+        }
+        else if(current_event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+        {
+            if(current_event.mouse.button != 0)
+            {
+                if(current_event.mouse.button == 1)
+                    InputManager::UpdateInputKeyUp(BC_MOUSE_LKEY);
+                else if (current_event.mouse.button == 2)
+                    InputManager::UpdateInputKeyUp(BC_MOUSE_RKEY);
+                else if (current_event.mouse.button == 3)
+                    InputManager::UpdateInputKeyUp(BC_MOUSE_MIDKEY);
+                
+                InputManager::UpdateKeyActions();
+            }
+        }
+        else if(current_event.type == ALLEGRO_EVENT_MOUSE_AXES)
+        {
+            InputManager::UpdateMouseState(current_event.mouse, game_display);
         }
 
 
         if (redraw_screen && al_is_event_queue_empty(game_event_queue))
         {
-
             al_clear_to_color(al_map_rgb(0,0,0));
             double delta_time = Render::UpdateDeltaTime();
             WidgetManager::UpdateWidgets();
-            
+
             EngineDebugger::Update(delta_time);
             EngineDebugger::ShowFPS(delta_time);
             al_flip_display();
             redraw_screen = false;
-            InputManager::UpdateKeyboardKeysDuringRender();
-            InputManager::UpdateKeyboardActions();
+            InputManager::UpdateInputKeysDuringRender();
+            InputManager::UpdateKeyActions();
         }
     }
 }

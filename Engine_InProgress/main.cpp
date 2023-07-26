@@ -29,6 +29,39 @@ int main(int argc, char const *argv[])
     //add to viewport (calls Begin() method for canvas)
     WidgetManager::AddToViewport(canvas);
 
+    //now we can find widget on the screen
+    std::cout << (WidgetManager::FindWidgetInViewport<CanvasWidget>("Widget_1", "class_CanvasWidget"))->GetName() << "\n";
+
+    auto A = ObjectManager::CreateObject<Object>("A", "class_Object");
+    auto B = ObjectManager::CreateObject<Object>("B", "class_Object");
+    auto C = ObjectManager::CreateObject<Object>("C", "class_Object");
+    auto D = ObjectManager::CreateObject<Object>("D", "class_Object");
+    auto E = ObjectManager::CreateObject<Object>("E", "class_Object");
+
+    A->AttachObjectChild(B);
+    A->AttachObjectChild(C);
+    B->AttachObjectChild(D);
+    B->AttachObjectChild(E);
+
+    for (size_t i = 0; i < 100; i++)
+    {
+        D->AttachObjectChild(ObjectManager::CreateObject<Object>(std::to_string(i), "class_Object"));
+    }
+    
+    A->AttachObjectChild(canvas);
+
+    ObjectManager::DestroyObject(A);
+
+    // Benchmark _bench;
+    // _bench.Start();
+    // auto r = A->DeepCollectObjectChildren();
+    // _bench.Stop();
+    // for (size_t i = 0; i < r.size(); i++)
+    // {
+    //     std::cout << r[i]->GetName() << "; ";
+    // }
+    // std::cout << "\n in time: " << _bench.GetTimeMicro() << " microseconds\n";
+
     g.StartGame();
     return 0;
 }

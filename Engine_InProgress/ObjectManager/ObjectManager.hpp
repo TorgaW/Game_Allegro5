@@ -74,7 +74,18 @@ public:
     static inline bool DestroyObject(Ref<T> candidate)
     {   
         // candidate->MarkPendingKill();
-        return MemoryPool::FreeObject(candidate.GetObjPtr());
+        // return MemoryPool::FreeObject(candidate.GetObjPtr());
+        if(candidate.IsValidStrict())
+        {
+            auto t = candidate->DeepCollectObjectChildren();
+            for (size_t i = 0; i < t.size(); i++)
+            {
+                MemoryPool::FreeObject(t[i].GetObjPtr());
+            }
+            MemoryPool::FreeObject(candidate.GetObjPtr());
+            return true;
+        }
+        return false;
     };
 };
 
