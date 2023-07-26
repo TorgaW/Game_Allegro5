@@ -4,6 +4,8 @@
 #include "../ALLEGRO_DefaultInclude.hpp"
 #include "../STD_DefaultInclude.hpp"
 #include "../EngineDebugger/EngineDebugger.hpp"
+#include "../UI/WidgetManager/WidgetManager.hpp"
+#include "../Input/InputManager.hpp"
 
 class Game
 {

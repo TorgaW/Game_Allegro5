@@ -26,6 +26,7 @@ void Widget::SetIsActive(bool is_active, bool propagate_to_children)
 
 bool Widget::AttachChild(Ref<Widget> child)
 {
+    if(!widget_can_have_children) return false;
     if(!child.IsValidStrict() || widget_is_removed) return false;
     if(child->widget_is_removed) return false;
 
@@ -37,6 +38,7 @@ bool Widget::AttachChild(Ref<Widget> child)
 
 bool Widget::DetachChild(Ref<Widget> child)
 {
+    if(!widget_can_have_children) return false;
     if(!child.IsValidStrict() || widget_is_removed) return false;
     if(child->widget_is_removed) return false;
     

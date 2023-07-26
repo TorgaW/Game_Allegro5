@@ -3,6 +3,12 @@
 void CanvasWidget::Begin()
 {
     target_width = max_width;
+    canvas_input.AddKeyboardActionBinding("test_input", KeyboardEventType::Hold, this, &CanvasWidget::TestInput);
+}
+
+void CanvasWidget::Update(float delta)
+{
+    canvas_input.ListenToInput();
 }
 
 void CanvasWidget::Draw(float delta)
@@ -44,4 +50,9 @@ void CanvasWidget::Draw(float delta)
                         widget_transform.position.y + widget_transform.size.y,
                         canvas_border_color,
                         canvas_border_thickness);
+}
+
+void CanvasWidget::TestInput()
+{
+    EngineDebugger::PrintDebugMessage("Hello!!", al_map_rgb_f(1.f, 1.f, 1.f), 10.0f);
 }

@@ -9,6 +9,8 @@ Memory/Memory.cpp
 Object/Object.cpp
 Render/Render.cpp
 UI/Widget/Widget.cpp
+Input/InputManager.cpp
+EngineDebugger/EngineDebugger.cpp
 Game/Game.cpp)
 
 
