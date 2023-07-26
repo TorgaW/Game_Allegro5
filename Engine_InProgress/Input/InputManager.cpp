@@ -61,10 +61,12 @@ void InputManager::UpdateKeyActions()
 
 void InputManager::UpdateMouseState(ALLEGRO_MOUSE_EVENT mouse, ALLEGRO_DISPLAY *display)
 {
+    input_mouse_state.delta_position.x = -(input_mouse_state.position.x - mouse.x);
+    input_mouse_state.delta_position.y = -(input_mouse_state.position.y - mouse.y);
     input_mouse_state.position.x = mouse.x;
     input_mouse_state.position.y = mouse.y;
     input_mouse_state.wheel = mouse.dz;
     // std::stringstream ss;
-    // ss << "x: " << input_mouse_state.position.x << "y: " << input_mouse_state.position.y << "z: " << input_mouse_state.wheel;
+    // ss << "x: " << input_mouse_state.delta_position.x << "y: " << input_mouse_state.delta_position.y << "z: " << input_mouse_state.wheel;
     // EngineDebugger::PrintDebugMessage(ss.str(), al_map_rgb(255, 255, 0), 0.1f);
 }
