@@ -138,6 +138,8 @@ public:
 
     static void UpdateMouseState(ALLEGRO_MOUSE_EVENT mouse, ALLEGRO_DISPLAY *display);
 
+    static inline MouseState GetMouse() { return input_mouse_state; };
+
     InputManager(){};
     ~InputManager(){};
 };
