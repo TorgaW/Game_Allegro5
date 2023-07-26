@@ -5,15 +5,19 @@
 #include <string>
 #include <map>
 #include <vector>
+#include "../EngineDebugger/EngineDebugger.hpp"
+// #include "../Object/Object.hpp"
 
 //special alloc options for specific classes
 //{name, max_objects}
 const std::map<std::string, size_t> mem_alloc_options = {
-    {"class_Object", 50000u}
+    {"class_Object", 50u}
 };
 
+// class Object;
+
 //default alloc option
-const size_t mem_alloc_default_value = 100u;
+const size_t mem_alloc_default_value = 50u;
 
 /**
  * @brief Safe reference to ANY Object in game. This reference is managed by garbage collector and always will be safe to use.
@@ -95,13 +99,15 @@ public:
     char *iterator {nullptr}; //can be used to iterate through chunk.
     size_t byte_size {0u}; //size of storing class in bytes.
     // std::vector<bool> b_array; //indicators for allocation.
-    bool *b_array; //indicators for allocation.
+    bool *b_array {nullptr}; //indicators for allocation.
     size_t max_objects {0u};
     size_t allocated {0u};
     size_t last_allocated {0u}; //index of the last allocated object
+    int storage_id {-1};
+    void *last_allocated_obj {nullptr};
 public:
-    ObjectMemPool(){};
-    ~ObjectMemPool(){};
+    ObjectMemPool(int pool_id) : storage_id(pool_id) {};
+    ~ObjectMemPool();
 
     inline bool IsFull() { return allocated == max_objects; };
 
@@ -115,8 +121,8 @@ public:
     template<class _T>
     bool FreeObject(_T *object_ptr)
     {
-        if(object_ptr->GetMemStorageIndex() < 0) return false;
-        b_array[object_ptr->GetMemStorageIndex()] = true;
+        if(object_ptr->GetMemStorageInfo().storage_index < 0) return false;
+        b_array[object_ptr->GetMemStorageInfo().storage_index] = true;
         allocated--;
         return true;
     }
@@ -126,11 +132,12 @@ public:
     template<class _T>
     bool SetupObject(_T *obj_ptr)    
     {
+        if((_T*)(last_allocated_obj) != obj_ptr) return false;
         for (size_t i = 0; i < max_objects; i++)
         {
             if(!b_array[i] && *((_T*)(begin + byte_size*i)) == *obj_ptr)
             {
-                obj_ptr->SetMemStorageIndex(i);
+                obj_ptr->SetMemStorageInfo(i, storage_id);
                 return true;
             }
         }
@@ -156,32 +163,19 @@ public:
 class MemoryPool
 {
 private:
-    inline static std::map<std::string, ObjectMemPool> object_pools {};
+    inline static std::map<std::string, std::vector<ObjectMemPool>> object_pools {};
 public:
     MemoryPool(){};
     ~MemoryPool(){};
 
-    static void *AllocateObject(std::string obj_class, size_t class_size)
-    {
-        auto mem_pool = object_pools.find(obj_class);
-        if(mem_pool != object_pools.end())
-        {
-            return (mem_pool->second.AllocateObject());
-        }
-        else
-        {
-            object_pools.insert({obj_class, ObjectMemPool()});
-            object_pools[obj_class].Allocate(obj_class, class_size);
-            return (object_pools[obj_class].AllocateObject());
-        }
-    }
+    static void *AllocateObject(std::string obj_class, size_t class_size);
 
     template<class T>
     static bool FreeObject(T *obj_ptr)
     {
         auto mem_pool = object_pools.find(obj_ptr->GetClass());
         if(mem_pool != object_pools.end())
-            return mem_pool->second.FreeObject(obj_ptr);
+            return mem_pool->second[obj_ptr->GetMemStorageInfo().storage_id].FreeObject(obj_ptr);
         else
             return false;
     }
@@ -191,7 +185,13 @@ public:
     {
         auto mem_pool = object_pools.find(obj_ptr->GetClass());
         if(mem_pool != object_pools.end())
-            return mem_pool->second.SetupObject(obj_ptr);
+        {
+            for (size_t i = 0; i < mem_pool->second.size(); i++)
+            {
+                if(mem_pool->second[i].SetupObject(obj_ptr)) return true;
+            }
+            return false;
+        }
         else
             return false;
     }
@@ -201,12 +201,14 @@ public:
     {
         auto mem_pool = object_pools.find(obj_ptr->GetClass());
         if(mem_pool != object_pools.end())
-            return mem_pool->second.CreateRef(obj_ptr);
+            return mem_pool->second[obj_ptr->GetMemStorageInfo().storage_id].CreateRef(obj_ptr);
         else
             return Ref<T>();
     }
 
     static bool IsSpaceAvailable(std::string obj_class);
+
+    static void DebugMemory();
 
 };
 

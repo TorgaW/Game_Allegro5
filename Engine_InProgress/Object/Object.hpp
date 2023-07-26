@@ -10,6 +10,12 @@
 
 // class GarbageCollector;
 
+struct ObjectStorageInfo
+{
+    int storage_index {-1};
+    int storage_id {-1};
+};
+
 struct ObjectSignature
 {
     std::string obj_name;
@@ -79,9 +85,13 @@ public:
     //get object base class.
     inline std::string GetClass() { return obj_class; };
 
-    inline int GetMemStorageIndex() { return obj_storage_index; };
+    inline ObjectStorageInfo GetMemStorageInfo() { return obj_storage_info; };
 
-    inline void SetMemStorageIndex(int i) { obj_storage_index = i; };
+    inline void SetMemStorageInfo(int index, int id)
+    { 
+        obj_storage_info.storage_index = index;
+        obj_storage_info.storage_id = id;
+    };
 
     inline size_t GetHash() { return obj_signature.obj_hash; };
 
@@ -132,6 +142,7 @@ protected:
     std::vector<Ref<Object>> obj_children {};
     // bool obj_pending_kill{false};
     int obj_storage_index {-1};
+    ObjectStorageInfo obj_storage_info;
 
 private:
     bool begin_done {false};

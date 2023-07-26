@@ -9,9 +9,10 @@ struct EngineDebugMessage
     std::string message {""};
     ALLEGRO_COLOR color {al_map_rgb_f(1.0f, 1.0f, 0.0f)};
     float live_time {0.0};
+    int priority {0};
     EngineDebugMessage(){};
-    EngineDebugMessage(std::string msg, ALLEGRO_COLOR clr, float time) :
-    message(msg), color(clr), live_time(time)
+    EngineDebugMessage(std::string msg, ALLEGRO_COLOR clr, float time, int _priority) :
+    message(msg), color(clr), live_time(time), priority(_priority)
     {};
 };
 
@@ -37,7 +38,7 @@ public:
         al_draw_text(debug_font, al_map_rgb(255,255,255), 0, 0, 0, strs.str().c_str());
     };
 
-    static void PrintDebugMessage(std::string msg, ALLEGRO_COLOR clr, float time);
+    static void PrintDebugMessage(std::string msg, ALLEGRO_COLOR clr, float time, int priority = 0);
 
     static void Update(float delta);
 };

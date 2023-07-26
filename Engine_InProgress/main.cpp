@@ -8,7 +8,12 @@ int main(int argc, char const *argv[])
     g.InitGame();
 
     //create canvas
+    // Benchmark _bench;
+    // _bench.Start();
     auto canvas = WidgetManager::CreateWidget<CanvasWidget>("Widget_1", "class_CanvasWidget");
+    // _bench.Stop();
+    // std::cout << _bench.GetTimeMicro() << " microseconds\n";
+
 
     //create another canvas
     auto canv_child = WidgetManager::CopyWidget<CanvasWidget>(canvas, "Widget_2");
@@ -32,25 +37,25 @@ int main(int argc, char const *argv[])
     //now we can find widget on the screen
     std::cout << (WidgetManager::FindWidgetInViewport<CanvasWidget>("Widget_1", "class_CanvasWidget"))->GetName() << "\n";
 
-    auto A = ObjectManager::CreateObject<Object>("A", "class_Object");
-    auto B = ObjectManager::CreateObject<Object>("B", "class_Object");
-    auto C = ObjectManager::CreateObject<Object>("C", "class_Object");
-    auto D = ObjectManager::CreateObject<Object>("D", "class_Object");
-    auto E = ObjectManager::CreateObject<Object>("E", "class_Object");
+    // auto A = ObjectManager::CreateObject<Object>("A", "class_Object");
+    // auto B = ObjectManager::CreateObject<Object>("B", "class_Object");
+    // auto C = ObjectManager::CreateObject<Object>("C", "class_Object");
+    // auto D = ObjectManager::CreateObject<Object>("D", "class_Object");
+    // auto E = ObjectManager::CreateObject<Object>("E", "class_Object");
 
-    A->AttachObjectChild(B);
-    A->AttachObjectChild(C);
-    B->AttachObjectChild(D);
-    B->AttachObjectChild(E);
+    // A->AttachObjectChild(B);
+    // A->AttachObjectChild(C);
+    // B->AttachObjectChild(D);
+    // B->AttachObjectChild(E);
 
-    for (size_t i = 0; i < 100; i++)
-    {
-        D->AttachObjectChild(ObjectManager::CreateObject<Object>(std::to_string(i), "class_Object"));
-    }
+    // for (size_t i = 0; i < 100; i++)
+    // {
+    //     D->AttachObjectChild(ObjectManager::CreateObject<Object>(std::to_string(i), "class_Object"));
+    // }
     
-    A->AttachObjectChild(canvas);
+    // A->AttachObjectChild(canvas);
 
-    ObjectManager::DestroyObject(A);
+    // ObjectManager::DestroyObject(A);
 
     // Benchmark _bench;
     // _bench.Start();

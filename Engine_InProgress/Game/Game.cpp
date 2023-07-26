@@ -114,6 +114,7 @@ void Game::LoopGame()
 
             EngineDebugger::Update(delta_time);
             EngineDebugger::ShowFPS(delta_time);
+            MemoryPool::DebugMemory();
             al_flip_display();
             redraw_screen = false;
             InputManager::UpdateInputKeysDuringRender();
