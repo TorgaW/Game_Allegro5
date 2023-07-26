@@ -26,6 +26,10 @@ void Game::InitGame()
     al_register_event_source(game_event_queue, al_get_timer_event_source(game_timer));
 
     EngineFonts::InitEngineFonts();
+    InputManager::Init();
+    EngineDebugger::Init();
+
+    InputManager::CreateKeyboardInputAction("test_input", ALLEGRO_KEY_W);
 
     game_is_setup = true;
 }
@@ -60,15 +64,29 @@ void Game::LoopGame()
                 EndGame();
                 break;
             }
+            InputManager::UpdateKeyboardKeyDown(current_event.keyboard.keycode);
+            InputManager::UpdateKeyboardActions();
         }
+        else if (current_event.type == ALLEGRO_EVENT_KEY_UP)
+        {
+            InputManager::UpdateKeyboardKeyUp(current_event.keyboard.keycode);
+            InputManager::UpdateKeyboardActions();
+        }
+
 
         if (redraw_screen && al_is_event_queue_empty(game_event_queue))
         {
+
             al_clear_to_color(al_map_rgb(0,0,0));
-            EngineDebugger::ShowFPS(Render::UpdateDeltaTime());
+            double delta_time = Render::UpdateDeltaTime();
             WidgetManager::UpdateWidgets();
+            
+            EngineDebugger::Update(delta_time);
+            EngineDebugger::ShowFPS(delta_time);
             al_flip_display();
             redraw_screen = false;
+            InputManager::UpdateKeyboardKeysDuringRender();
+            InputManager::UpdateKeyboardActions();
         }
     }
 }

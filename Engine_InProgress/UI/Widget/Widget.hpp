@@ -65,6 +65,12 @@ public:
     void PropagateUpdate(float delta);
 
     void PropagateDraw(float delta);
+
+    inline bool CanHaveChildren() { return widget_can_have_children; };
+
+protected:
+    //can widget hold children.
+    bool widget_can_have_children {true};
 };
 
 

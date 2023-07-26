@@ -3,6 +3,9 @@
 
 #include "../STD_DefaultInclude.hpp"
 #include "../Memory/Memory.hpp"
+#include "../Input/InputComponent/InputComponent.hpp"
+#include "../EngineDebugger/EngineDebugger.hpp"
+// #include <allegro5/allegro_font.h>
 // #include "../GarbageCollector/GarbageCollector.hpp"
 
 // class GarbageCollector;
