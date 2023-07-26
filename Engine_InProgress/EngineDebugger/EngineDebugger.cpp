@@ -1,9 +1,9 @@
 #include "EngineDebugger.hpp"
 
-void EngineDebugger::PrintDebugMessage(std::string msg, ALLEGRO_COLOR clr, float time)
+void EngineDebugger::PrintDebugMessage(std::string msg, ALLEGRO_COLOR clr, float time, int priority)
 {
     if(messages_queue.size() > 60) return;
-    messages_queue.emplace_back(msg, clr, time);
+    messages_queue.emplace_back(msg, clr, time, priority);
 }
 
 void EngineDebugger::Update(float delta)
@@ -16,6 +16,13 @@ void EngineDebugger::Update(float delta)
             return dbg_msg.live_time < 0.0f;
         }),
         messages_queue.end());
+
+        std::sort(messages_queue.begin(), messages_queue.end(), 
+        [](const EngineDebugMessage& a, const EngineDebugMessage& b)
+        {
+            return a.priority > b.priority;
+        }
+        );
 
         int message_y = 25;
 
