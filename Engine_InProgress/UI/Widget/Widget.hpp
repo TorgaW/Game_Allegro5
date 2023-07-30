@@ -28,20 +28,10 @@ public:
     bool widget_is_removed{false};
 
 public:
-<<<<<<< Updated upstream
     Widget(const std::string& _obj_class, const ObjectSignature& obj_sign) :
     Object(_obj_class, obj_sign)
     {};
     virtual ~Widget(){};
-||||||| Stash base
-    Widget(const std::string& _obj_class, const ObjectSignature& obj_sign) :
-    Object(_obj_class, obj_sign)
-    {};
-    ~Widget(){};
-=======
-    Widget(const std::string &_obj_class, const ObjectSignature &obj_sign) : Object(_obj_class, obj_sign){};
-    ~Widget(){};
->>>>>>> Stashed changes
 
     /**
      * @brief called once when widget is created.
@@ -78,22 +68,18 @@ public:
     void PropagateUpdate(float delta);
 
     void PropagateDraw(float delta);
-<<<<<<< Updated upstream
-
-    inline bool CanHaveChildren() { return widget_can_have_children; };
-
-protected:
-    //can widget hold children.
-    bool widget_can_have_children {true};
-||||||| Stash base
-=======
 
     void SetSize(const Vec2 &size);
 
     void SetPosition(const Vec2 &position);
 
     void SetPivotPoint(const Vec2 &pivot_point);
->>>>>>> Stashed changes
+
+    inline bool CanHaveChildren() { return widget_can_have_children; };
+
+protected:
+    //can widget hold children.
+    bool widget_can_have_children {true};
 };
 
 #endif /* E38DAEB6_BF2C_4C99_9C8A_6F9A5B9C4FEF */

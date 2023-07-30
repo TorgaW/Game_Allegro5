@@ -43,7 +43,6 @@ void CanvasWidget::Draw(float delta)
         Render::GetMonitorWidth() / 2.0f - widget_transform.size.x / 2.0f,
         Render::GetMonitorHeight() / 2.0f - widget_transform.size.y / 2.0f};
 
-<<<<<<< Updated upstream
     //draw primitive rectangle
     al_draw_rectangle(  widget_transform.position.x, widget_transform.position.y, 
                         widget_transform.position.x + widget_transform.size.x,
@@ -56,20 +55,3 @@ void CanvasWidget::TestInput()
 {
     EngineDebugger::PrintDebugMessage("Hello!!", al_map_rgb_f(1.f, 1.f, 1.f), 10.0f);
 }
-||||||| Stash base
-    //draw primitive rectangle
-    al_draw_rectangle(  widget_transform.position.x, widget_transform.position.y, 
-                        widget_transform.position.x + widget_transform.size.x,
-                        widget_transform.position.y + widget_transform.size.y,
-                        canvas_border_color,
-                        canvas_border_thickness);
-}
-=======
-    // draw primitive rectangle
-    al_draw_rectangle(widget_transform.position.x, widget_transform.position.y,
-                      widget_transform.position.x + widget_transform.size.x,
-                      widget_transform.position.y + widget_transform.size.y,
-                      canvas_border_color,
-                      canvas_border_thickness);
-}
->>>>>>> Stashed changes

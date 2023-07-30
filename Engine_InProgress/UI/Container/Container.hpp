@@ -36,6 +36,10 @@ public:
 
     float border_radius{0.f};
 
+    Alignment container_alignment{RowUpperLeft};
+
+    Vec2 elements_gap{500.f, 100.f};
+
     virtual void Update(float delta);
 
     void SetElementsAlignment(Alignment elements_alignment);
@@ -50,6 +54,9 @@ public:
 
     Container(const std::string &_obj_class, const ObjectSignature &obj_sign) : Widget(_obj_class, obj_sign){};
     ~Container(){};
+
+protected:
+    bool requestAlignmentRender{true};
 };
 
 #endif /* DA9AC788_B999_4293_9BEC_C38A514E2DBC */

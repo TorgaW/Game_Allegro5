@@ -26,19 +26,9 @@ void Widget::SetIsActive(bool is_active, bool propagate_to_children)
 
 bool Widget::AttachChild(Ref<Widget> child)
 {
-<<<<<<< Updated upstream
     if(!widget_can_have_children) return false;
     if(!child.IsValidStrict() || widget_is_removed) return false;
     if(child->widget_is_removed) return false;
-||||||| Stash base
-    if(!child.IsValidStrict() || widget_is_removed) return false;
-    if(child->widget_is_removed) return false;
-=======
-    if (!child.IsValidStrict() || widget_is_removed)
-        return false;
-    if (child->widget_is_removed)
-        return false;
->>>>>>> Stashed changes
 
     widget_children.emplace_back(child);
     child->widget_parent = MemoryPool::CreateRef(this);
@@ -48,22 +38,10 @@ bool Widget::AttachChild(Ref<Widget> child)
 
 bool Widget::DetachChild(Ref<Widget> child)
 {
-<<<<<<< Updated upstream
     if(!widget_can_have_children) return false;
     if(!child.IsValidStrict() || widget_is_removed) return false;
     if(child->widget_is_removed) return false;
     
-||||||| Stash base
-    if(!child.IsValidStrict() || widget_is_removed) return false;
-    if(child->widget_is_removed) return false;
-    
-=======
-    if (!child.IsValidStrict() || widget_is_removed)
-        return false;
-    if (child->widget_is_removed)
-        return false;
-
->>>>>>> Stashed changes
     auto r = std::find(widget_children.begin(), widget_children.end(), child);
     if (r == widget_children.end())
         return false;

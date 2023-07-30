@@ -7,19 +7,12 @@ int main(int argc, char const *argv[])
     Game g;
     g.InitGame();
 
-    //create canvas
-<<<<<<< Updated upstream
-    // Benchmark _bench;
-    // _bench.Start();
-    auto canvas = WidgetManager::CreateWidget<CanvasWidget>("Widget_1", "class_CanvasWidget");
-    // _bench.Stop();
-    // std::cout << _bench.GetTimeMicro() << " microseconds\n";
-
-||||||| Stash base
-    auto canvas = WidgetManager::CreateWidget<CanvasWidget>("Widget_1", "class_CanvasWidget");
-=======
-    // auto canvas = WidgetManager::CreateWidget<CanvasWidget>("Widget_1", "class_CanvasWidget");
->>>>>>> Stashed changes
+    // create canvas
+    //  Benchmark _bench;
+    //  _bench.Start();
+    //  auto canvas = WidgetManager::CreateWidget<CanvasWidget>("Widget_1", "class_CanvasWidget");
+    //  _bench.Stop();
+    //  std::cout << _bench.GetTimeMicro() << " microseconds\n";
 
     // //create another canvas
     // auto canv_child = WidgetManager::CopyWidget<CanvasWidget>(canvas, "Widget_2");
@@ -37,33 +30,49 @@ int main(int argc, char const *argv[])
     // //attch as child widget (calls Begin() method for canv_child)
     // canvas->AttachChild(canv_child);
 
-    //add to viewport (calls Begin() method for canvas)
-    // WidgetManager::AddToViewport(canvas);
+    // add to viewport (calls Begin() method for canvas)
+    //  WidgetManager::AddToViewport(canvas);
 
     auto container = WidgetManager::CreateWidget<Container>("Container_1", "class_Container");
     container->SetPosition({Render::GetMonitorWidth() / 2.0f,
-                         Render::GetMonitorHeight() / 2.0f});
-    container->SetElementsAlignment(Alignment::RowUpperLeft);
+                            Render::GetMonitorHeight() / 2.0f});
+    container->SetSize({1200, Render::GetMonitorHeight() * 1.f});
+    container->SetPivotPoint({0.5f, 0.5f});
+    container->SetElementsAlignment(Alignment::RowUpperCenter);
 
     auto text1 = WidgetManager::CreateWidget<TextWidget>("TextWidget_1", "class_TextWidget");
     text1->SetFont(EngineFonts::Ubuntu30R);
-    text1->SetText("I love Dasha");
+    text1->SetText("Dasha");
     text1->SetPivotPoint({0.5f, 0.5f});
-    text1->SetSize({200, 150});
+    text1->SetSize({200, 100});
 
-    auto text2 = WidgetManager::CreateWidget<TextWidget>("TextWidget_1", "class_TextWidget");
+    auto text2 = WidgetManager::CreateWidget<TextWidget>("TextWidget_2", "class_TextWidget");
     text2->SetFont(EngineFonts::Ubuntu30R);
-    text2->SetText("AbobaAbobusovich");
+    text2->SetText("Dasha");
     text2->SetPivotPoint({0.5f, 0.5f});
-    text2->SetSize({200, 150});
+    text2->SetSize({200, 100});
 
-    container->AttachChild(text2);
+    auto text3 = WidgetManager::CreateWidget<TextWidget>("TextWidget_3", "class_TextWidget");
+    text3->SetFont(EngineFonts::Ubuntu30R);
+    text3->SetText("Dasha");
+    text3->SetPivotPoint({0.5f, 0.5f});
+    text3->SetSize({200, 100});
+
+    auto text4 = WidgetManager::CreateWidget<TextWidget>("TextWidget_3", "class_TextWidget");
+    text4->SetFont(EngineFonts::Ubuntu30R);
+    text4->SetText("Dasha");
+    text4->SetPivotPoint({0.5f, 0.5f});
+    text4->SetSize({200, 100});
+
     container->AttachChild(text1);
+    container->AttachChild(text2);
+    container->AttachChild(text3);
+    container->AttachChild(text4);
 
     WidgetManager::AddToViewport(container);
 
-    //now we can find widget on the screen
-    std::cout << (WidgetManager::FindWidgetInViewport<CanvasWidget>("Widget_1", "class_CanvasWidget"))->GetName() << "\n";
+    // now we can find widget on the screen
+    //  std::cout << (WidgetManager::FindWidgetInViewport<CanvasWidget>("Widget_1", "class_CanvasWidget"))->GetName() << "\n";
 
     // auto A = ObjectManager::CreateObject<Object>("A", "class_Object");
     // auto B = ObjectManager::CreateObject<Object>("B", "class_Object");
@@ -80,7 +89,7 @@ int main(int argc, char const *argv[])
     // {
     //     D->AttachObjectChild(ObjectManager::CreateObject<Object>(std::to_string(i), "class_Object"));
     // }
-    
+
     // A->AttachObjectChild(canvas);
 
     // ObjectManager::DestroyObject(A);
