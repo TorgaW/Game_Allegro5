@@ -1,16 +1,20 @@
 #include "SceneManager.hpp"
 
-bool SceneManager::AddObjectToScene(Scene *_scene, Ref<SceneObject> _obj)
+void SceneManager::Init()
 {
-    if(_scene == nullptr) return false;
+    current_scene = new Scene(last_scene_id, "default_scene");
+    last_scene_id++;
+}
 
-    if(_scene->scene_map_object_buffer.size() == _scene->scene_max_buffer_size) return false;
-
-    auto p = std::find(_scene->scene_map_object_buffer.begin(), _scene->scene_map_object_buffer.end(), _obj);
-    
-    if(p != _scene->scene_map_object_buffer.end()) return false;
-
-    _scene->scene_map_object_buffer.emplace_back(_obj);
-
-    return true;
+void SceneManager::UpdateSceneObjects()
+{
+    if(current_scene != nullptr)
+    {
+        auto t = current_scene->GetBuffer();
+        for (size_t i = 0; i < t->size(); i++)
+        {
+            (*t)[i]->Update(Render::GetDeltaTime());
+        }
+        Render::DrawScene(t);
+    }
 }

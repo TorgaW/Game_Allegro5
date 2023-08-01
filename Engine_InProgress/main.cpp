@@ -7,6 +7,9 @@ int main(int argc, char const *argv[])
     Game g;
     g.InitGame();
 
+    auto r = SceneManager::CreateSceneObject<SceneObject>("Test", "class_SceneObject");
+    r->transform.position = {500, 500};
+
     //create canvas
     // Benchmark _bench;
     // _bench.Start();

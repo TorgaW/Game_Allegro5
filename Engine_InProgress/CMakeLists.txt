@@ -11,6 +11,10 @@ Render/Render.cpp
 UI/Widget/Widget.cpp
 Input/InputManager.cpp
 EngineDebugger/EngineDebugger.cpp
+SceneManager/SceneManager.cpp
+ShaderManager/ShaderManager.cpp
+Transforms/Transform.cpp
+BitmapManager/BitmapManager.cpp
 Game/Game.cpp)
 
 

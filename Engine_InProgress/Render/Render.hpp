@@ -7,12 +7,14 @@
 #include "../UI/Widget/Widget.hpp"
 
 class Widget;
+class SceneObject;
 
 class Render
 {
 private:
-    static inline Scene *rd_target_scene {nullptr};
+    // static inline Scene *rd_target_scene {nullptr};
     // static inline void *rd_target_ui {nullptr};
+    
     static inline double new_frame_time {0.0}, delta_time {0.0}, prev_frame_time {0.0};
 public:
     Render(){};
@@ -42,14 +44,16 @@ public:
 
     static inline double GetDeltaTime() { return delta_time; };
 
-    static inline void SetTargetScene(Scene *_scene) { rd_target_scene = _scene; };
-    static inline Scene *GetTargetScene() { return rd_target_scene; };
+    // static inline void SetTargetScene(Scene *_scene) { rd_target_scene = _scene; };
+    // static inline Scene *GetTargetScene() { return rd_target_scene; };
 
     // static inline void SetTargetUI(void *_ui) { rd_target_ui = _ui; };
     // static inline void *GetTargetUI() { return rd_target_ui; };
 
-    static void DrawScene();
-    static void DrawScene(Scene*);
+    // static void DrawScene();
+    // static void DrawScene(Scene*);
+
+    static void DrawScene(std::vector<Ref<SceneObject>> *objects);
 
     static void DrawUI(std::vector<Ref<Widget>>& widgets);
 };

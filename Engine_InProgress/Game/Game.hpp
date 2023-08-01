@@ -6,6 +6,7 @@
 #include "../EngineDebugger/EngineDebugger.hpp"
 #include "../UI/WidgetManager/WidgetManager.hpp"
 #include "../Input/InputManager.hpp"
+#include "../SceneManager/SceneManager.hpp"
 
 class Game
 {
