@@ -5,27 +5,18 @@
 
 enum Alignment
 {
-    RowUpperLeft = 0,
-    RowUpperCenter,
-    RowUpperRight,
-    RowMiddleLeft,
-    RowMiddleCenter,
-    RowMiddleRight,
-    RowLowerLeft,
-    RowLowerCenter,
-    RowLowerRight,
-    ColUpperLeft,
-    ColUpperCenter,
-    ColUpperRight,
-    ColMiddleLeft,
-    ColMiddleCenter,
-    ColMiddleRight,
-    ColLowerLeft,
-    ColLowerCenter,
-    ColLowerRight
+    UpperLeft = 0,
+    UpperCenter,
+    UpperRight,
+    MiddleLeft,
+    MiddleCenter,
+    MiddleRight,
+    LowerLeft,
+    LowerCenter,
+    LowerRight,
 };
 
-class Container : public Widget
+class HorizontalContainer : public Widget
 {
 public:
     float border_thickness{0.f};
@@ -36,11 +27,15 @@ public:
 
     float border_radius{0.f};
 
-    Alignment container_alignment{RowUpperLeft};
+    Alignment container_alignment{UpperLeft};
 
-    Vec2 elements_gap{500.f, 100.f};
+    float elements_gap_x{0.f};
 
     virtual void Update(float delta);
+
+    virtual void Draw(float delta);
+
+    void SetElementsGap(float elements_gap);
 
     void SetElementsAlignment(Alignment elements_alignment);
 
@@ -52,8 +47,8 @@ public:
 
     void SetBorderColor(ALLEGRO_COLOR border_color);
 
-    Container(const std::string &_obj_class, const ObjectSignature &obj_sign) : Widget(_obj_class, obj_sign){};
-    ~Container(){};
+    HorizontalContainer(const std::string &_obj_class, const ObjectSignature &obj_sign) : Widget(_obj_class, obj_sign){};
+    ~HorizontalContainer(){};
 
 protected:
     bool requestAlignmentRender{true};

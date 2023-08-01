@@ -28,9 +28,7 @@ public:
     bool widget_is_removed{false};
 
 public:
-    Widget(const std::string& _obj_class, const ObjectSignature& obj_sign) :
-    Object(_obj_class, obj_sign)
-    {};
+    Widget(const std::string &_obj_class, const ObjectSignature &obj_sign) : Object(_obj_class, obj_sign){};
     virtual ~Widget(){};
 
     /**
@@ -78,8 +76,8 @@ public:
     inline bool CanHaveChildren() { return widget_can_have_children; };
 
 protected:
-    //can widget hold children.
-    bool widget_can_have_children {true};
+    // can widget hold children.
+    bool widget_can_have_children{true};
 };
 
 #endif /* E38DAEB6_BF2C_4C99_9C8A_6F9A5B9C4FEF */

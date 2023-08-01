@@ -2,30 +2,11 @@
 
 void TextWidget::Draw(float delta)
 {
-    // al_draw_filled_rounded_rectangle(
-    //     widget_transform.position.x - widget_transform.size.x * widget_pivot_point.x,
-    //     widget_transform.position.y - widget_transform.size.y * widget_pivot_point.y,
-    //     widget_transform.position.x + widget_transform.size.x * (1.0f - widget_pivot_point.x),
-    //     widget_transform.position.y + widget_transform.size.y * (1.0f - widget_pivot_point.y),
-    //     widget_border_radius,
-    //     widget_border_radius,
-    //     widget_background_color);
-
-    // al_draw_rounded_rectangle(
-    //     widget_transform.position.x - widget_transform.size.x / 2.0f,
-    //     widget_transform.position.y - widget_transform.size.y / 2.0f,
-    //     widget_transform.position.x + widget_transform.size.x / 2.0f,
-    //     widget_transform.position.y + widget_transform.size.y / 2.0f,
-    //     widget_border_radius,
-    //     widget_border_radius,
-    //     widget_border_color,
-    //     widget_border_thickness);
-
     al_draw_text(
         text_font,
         text_color,
         widget_transform.position.x,
-        widget_transform.position.y,
+        widget_transform.position.y - al_get_font_line_height(text_font) / 2.0f,
         ALLEGRO_ALIGN_CENTER,
         text.c_str());
 }

@@ -20,7 +20,7 @@ set(UI
 #write new UI widget .cpp files here
 UI/Canvas/CanvasWidget.cpp 
 UI/TextWidget/TextWidget.cpp
-UI/Container/Container.cpp
+UI/HorizontalContainer/HorizontalContainer.cpp
 #
 )
 
