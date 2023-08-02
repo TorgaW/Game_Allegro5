@@ -1,6 +1,6 @@
-#include "HorizontalContainer.hpp"
+#include "HorizontalBox.hpp"
 
-void HorizontalContainer::Draw(float delta)
+void HorizontalBox::Draw(float delta)
 {
     al_draw_filled_rounded_rectangle(
         widget_transform.position.x - widget_transform.size.x * widget_pivot_point.x,
@@ -29,38 +29,38 @@ void HorizontalContainer::Draw(float delta)
         border_thickness);
 }
 
-void HorizontalContainer::SetElementsGap(float new_elements_gap_x)
+void HorizontalBox::SetElementsGap(float new_elements_gap_x)
 {
     elements_gap_x = new_elements_gap_x;
 }
 
-void HorizontalContainer::SetElementsAlignment(Alignment new_container_alignment)
+void HorizontalBox::SetElementsAlignment(Alignment new_container_alignment)
 {
     container_alignment = new_container_alignment;
     requestAlignmentRender = true;
 }
 
-void HorizontalContainer::SetBackgroundColor(ALLEGRO_COLOR new_background_color)
+void HorizontalBox::SetBackgroundColor(ALLEGRO_COLOR new_background_color)
 {
     background_color = new_background_color;
 }
 
-void HorizontalContainer::SetBorderRadius(float new_border_radius)
+void HorizontalBox::SetBorderRadius(float new_border_radius)
 {
     border_radius = new_border_radius;
 }
 
-void HorizontalContainer::SetBorderThickness(float new_border_thickness)
+void HorizontalBox::SetBorderThickness(float new_border_thickness)
 {
     border_thickness = new_border_thickness;
 }
 
-void HorizontalContainer::SetBorderColor(ALLEGRO_COLOR new_border_color)
+void HorizontalBox::SetBorderColor(ALLEGRO_COLOR new_border_color)
 {
     border_color = new_border_color;
 }
 
-void HorizontalContainer::Update(float delta)
+void HorizontalBox::Update(float delta)
 {
     if (requestAlignmentRender)
     {
@@ -80,7 +80,7 @@ void HorizontalContainer::Update(float delta)
                 // Initial values
                 float currentX = widget_transform.position.x - containerWidth / 2.0f;
                 float currentY = widget_transform.position.y - widget_transform.size.y / 2.0f;
-
+        
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
                     // Position the widget in the current row.

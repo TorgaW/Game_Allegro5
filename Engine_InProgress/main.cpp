@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
     // add to viewport (calls Begin() method for canvas)
     //  WidgetManager::AddToViewport(canvas);
 
-    auto container = WidgetManager::CreateWidget<HorizontalContainer>("Container_1", "class_Container");
+    auto container = WidgetManager::CreateWidget<HorizontalBox>("Container_1", "class_Container");
     container->SetPosition({Render::GetMonitorWidth() / 2.0f,
                             Render::GetMonitorHeight() / 2.0f});
     container->SetSize({1440, Render::GetMonitorHeight() / 2.0f});
@@ -69,8 +69,8 @@ int main(int argc, char const *argv[])
 
     container->AttachChild(text1);
     container->AttachChild(text2);
-    // container->AttachChild(text3);
-    // container->AttachChild(text4);
+    container->AttachChild(text3);
+    container->AttachChild(text4);
 
     WidgetManager::AddToViewport(container);
 

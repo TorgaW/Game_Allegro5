@@ -16,7 +16,7 @@ enum Alignment
     LowerRight,
 };
 
-class HorizontalContainer : public Widget
+class HorizontalBox : public Widget
 {
 public:
     float border_thickness{0.f};
@@ -47,8 +47,8 @@ public:
 
     void SetBorderColor(ALLEGRO_COLOR border_color);
 
-    HorizontalContainer(const std::string &_obj_class, const ObjectSignature &obj_sign) : Widget(_obj_class, obj_sign){};
-    ~HorizontalContainer(){};
+    HorizontalBox(const std::string &_obj_class, const ObjectSignature &obj_sign) : Widget(_obj_class, obj_sign){};
+    ~HorizontalBox(){};
 
 protected:
     bool requestAlignmentRender{true};
