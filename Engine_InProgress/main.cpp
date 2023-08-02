@@ -7,6 +7,17 @@ int main(int argc, char const *argv[])
     Game g;
     g.InitGame();
 
+
+    auto r = SceneManager::CreateSceneObject<SceneObject>("Test", "class_SceneObject");
+    r->transform.position = {500, 500};
+
+    //create canvas
+    // Benchmark _bench;
+    // _bench.Start();
+    auto canvas = WidgetManager::CreateWidget<CanvasWidget>("Widget_1", "class_CanvasWidget");
+    // _bench.Stop();
+    // std::cout << _bench.GetTimeMicro() << " microseconds\n";
+
     // create canvas
     //  Benchmark _bench;
     //  _bench.Start();
@@ -21,6 +32,7 @@ int main(int argc, char const *argv[])
     // canvas->widget_transform.size = {100, 100};
     // canvas->max_width = 200.f;
     // canvas->min_width = 50.f;
+
 
     // //set child props
     // canv_child->widget_transform.size = {50, 50};

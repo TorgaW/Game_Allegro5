@@ -32,14 +32,14 @@ public:
     template<class T>
     static Ref<T> CreateWidget(std::string name, std::string widget_class)
     {
-        static_assert(std::is_base_of<Widget, T>::value, "Widget manager error: must be Widget at least.");
+        static_assert(std::is_base_of<Widget, T>::value, "Widget manager creation error: must be Widget at least.");
         return ObjectManager::CreateObject<T>(name, widget_class);
     }
 
     template<class T>
     static Ref<T> CopyWidget(Ref<T> candidate, std::string name)
     {
-        static_assert(std::is_base_of<Widget, T>::value, "Widget manager error: must be Widget at least.");
+        static_assert(std::is_base_of<Widget, T>::value, "Widget manager copy error: must be Widget at least.");
         return ObjectManager::CopyObject<T>(candidate, name);
     }
 

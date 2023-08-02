@@ -1,112 +1,66 @@
-#ifndef B0EB5C86_0615_4316_A089_D0AA42406677
-#define B0EB5C86_0615_4316_A089_D0AA42406677
+#ifndef B1CBA0EA_5BE5_42CC_9CEC_6EF223767600
+#define B1CBA0EA_5BE5_42CC_9CEC_6EF223767600
 
+#include "../ObjectManager/ObjectManager.hpp"
 #include "../Scene/Scene.hpp"
+#include "../Render/Render.hpp"
 #include <type_traits>
-
-//condition for fast search object
-enum FindObjectMode
-{
-    Name,
-    ObjClass,
-    NameAndClass,
-    NameOrClass
-};
 
 class SceneManager
 {
 private:
-    static inline Scene *mng_target_scene {nullptr};
-
+    static inline Scene* current_scene {nullptr};
+    static inline uint64_t last_scene_id {1};
+    static inline std::vector<Scene*> scenes_buffer {};
 public:
     SceneManager(){};
     ~SceneManager(){};
 
-    static inline void SetTargetScene(Scene *_scene)
+public:
+    static void Init();
+
+    static void UpdateSceneObjects();
+
+    template<class T>
+    static Ref<T> CreateSceneObject(const std::string& name, const std::string& obj_class)
     {
-        if(_scene != nullptr)
-            mng_target_scene = _scene;
+        static_assert(std::is_base_of<SceneObject, T>::value, "Scene manager creation error: must be SceneObject at least.");
+        auto t = ObjectManager::CreateObject<T>(name, obj_class);
+        current_scene->AddSceneObject(t);
+        return t;
     };
 
-    static inline Scene *GetTargetScene() { return mng_target_scene; };
-
-    // bool AddObjectToScene(Scene *_scene, Ref<SceneObject> _obj);
-
-    // bool AddObjectToScene(Ref<SceneObject> _obj);
-
-    //creates scene object
     template<class T>
-    static Ref<T> CreateObject(const std::string& name, const std::string& _obj_class)
+    static Ref<T> CopySceneObject(Ref<T> candidate, std::string name)
     {
-        static_assert(std::is_base_of<SceneObject, T>::value, "Scene manager error: must be SceneObject at least.");
-        return ObjectManager::CreateObject<T>(name, _obj_class);
+        static_assert(std::is_base_of<SceneObject, T>::value, "Scene manager copy error: must be SceneObject at least.");
+        auto t = ObjectManager::CopyObject<T>(candidate, name);
+        current_scene->AddSceneObject(t);
+        return t;
     }
 
-    template<class T>
-    static Ref<T> CopyObject(const Ref<T> &candidate, const std::string &name)
+    static inline void CreateGameScene(const std::string& name)
     {
-        static_assert(std::is_base_of<SceneObject, T>::value, "Scene manager error: must be SceneObject at least.");
-        return ObjectManager::CopyObject<T>(candidate, name);
-    }
+        scenes_buffer.push_back(new Scene(last_scene_id, name));
+        last_scene_id++;
+    };
 
-    template<class T>
-    static bool AddObjectToScene(Ref<T> _object)
+    static inline void ChangeGameScene(const std::string& to_name)
     {
-        if(!_object.IsValidStrict()) return false;
-        mng_target_scene->scene_map_object_buffer[_object->GetClass()].push_back(static_cast<Ref<SceneObject>>(_object));
-        return true;
-    }
-
-    template<class T>
-    static Ref<T> FindObject(FindObjectMode mode, std::string name, std::string obj_class)
-    {
-        for (auto const& [key, val] : mng_target_scene->scene_map_object_buffer)
+        auto r = std::find_if(scenes_buffer.begin(), scenes_buffer.end(), 
+        [to_name](Scene* s)
         {
-            // switch (mode)
-            // {
-            // case FindObjectMode::Name:
-            //     auto p = std::find_if(val.begin(), val.end(), 
-            //     [name](Ref<SceneObject> l)
-            //     {
-            //         return l->GetName() == name;
-            //     });
-            //     if(p != val.end()) return (*p);
-            //     break;
-            
-            // // case FindObjectMode::ObjClass:
-
-            // // default:
-            //     // break;
-            // }
+            return s->GetName() == to_name;
+        });
+        if(r != scenes_buffer.end())
+        {
+            current_scene = (*r);
         }
-        return Ref<T>();
-    }
+    };
 
-    
-    // template<class T>
-    // static bool AddToScene(Ref<Object>)
-    // {
-    //     return true;
-    // }
-
-    //copy scene object
-
-    //destroys scene object from memory
-    template<class T>
-    static bool DestroyObject(Scene *_scene, Ref<T> _candidate)
-    {
-        if(_scene == nullptr) return false;
-        // auto p = static_cast<Ref<SceneObject>>(_candidate);
-        
-        // _scene->scene_map_object_buffer.erase(std::remove_if(_scene->scene_map_object_buffer.begin(), _scene->scene_map_object_buffer.end(), 
-        // [_candidate](const Ref<SceneObject>& p)
-        // {
-        //     return _candidate == p;
-        // }), _scene->scene_map_object_buffer.end());
-
-        return ObjectManager::DestroyObject(_candidate);
-    }
-    
+    //TODO
+    static void SetObjectHiddenInScene(){};
 };
 
-#endif /* B0EB5C86_0615_4316_A089_D0AA42406677 */
+
+#endif /* B1CBA0EA_5BE5_42CC_9CEC_6EF223767600 */

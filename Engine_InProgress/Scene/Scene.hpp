@@ -1,23 +1,38 @@
-#ifndef CA90DD33_173E_4FD2_82CB_48C9F491E0AE
-#define CA90DD33_173E_4FD2_82CB_48C9F491E0AE
+#ifndef C1E09A79_990B_4A63_96D2_D8E857A2EF2F
+#define C1E09A79_990B_4A63_96D2_D8E857A2EF2F
 
-#include "SceneObject/SceneObject.hpp"
+// #include "../STD_DefaultInclude.hpp"
+#include "../SceneObject/SceneObject.hpp"
 
 class Scene
 {
-public:
+private:
+    uint64_t scene_id {0};
     std::string scene_name {""};
-    std::map<std::string, std::vector<Ref<SceneObject>>> scene_map_object_buffer {};
-    std::vector<Ref<SceneObject>> scene_obj_buffer {};
-    // size_t scene_max_buffer_size {0};
+    std::vector<Ref<SceneObject>> scene_vector_buffer {};
+
 public:
-    Scene(std::string name):scene_name(name) 
+    inline std::string GetName() { return scene_name; };
+    inline uint64_t GetId() { return scene_id; };
+    inline std::vector<Ref<SceneObject>> *GetBuffer() { return &scene_vector_buffer; };
+
+public:
+    Scene(uint64_t id, std::string name) : 
+    scene_id(id), scene_name(name)
     {};
-    // Scene(std::string name, size_t max_buffer_size):
-    // scene_name(name), scene_max_buffer_size(max_buffer_size)
-    // {};
     ~Scene(){};
+
+public:
+    template<class T>
+    void AddSceneObject(Ref<T> object)
+    {   
+        if(object.IsValidStrict())
+        {
+            scene_vector_buffer.push_back(object);
+            object->CallBegin();
+        }
+    };
 };
 
 
-#endif /* CA90DD33_173E_4FD2_82CB_48C9F491E0AE */
+#endif /* C1E09A79_990B_4A63_96D2_D8E857A2EF2F */

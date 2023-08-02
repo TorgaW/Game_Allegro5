@@ -29,6 +29,7 @@ void Game::InitGame()
     EngineFonts::InitEngineFonts();
     InputManager::Init();
     EngineDebugger::Init();
+    SceneManager::Init();
 
     InputManager::CreateKeyInputAction("test_input", BC_MOUSE_LKEY);
 
@@ -111,6 +112,7 @@ void Game::LoopGame()
         {
             al_clear_to_color(al_map_rgb(0,0,0));
             double delta_time = Render::UpdateDeltaTime();
+            SceneManager::UpdateSceneObjects();
             WidgetManager::UpdateWidgets();
 
             EngineDebugger::Update(delta_time);
