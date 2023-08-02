@@ -104,7 +104,7 @@ void HorizontalBox::Update(float delta)
                 float heightToAddToEachElement = 0.f;
                 if (horizontal_stretch)
                     widthToAddToEachElement = (containerWidth - totalElementsWidth) / widget_children.size();
-                
+
                 // Initial values
                 float currentX = widget_transform.position.x - containerWidth / 2.0f;
                 float currentY = widget_transform.position.y - widget_transform.size.y / 2.0f;
@@ -115,7 +115,8 @@ void HorizontalBox::Update(float delta)
                     widget_children[i]->widget_transform.size.x += widthToAddToEachElement;
 
                     // Stretch the elements on the vertical axis
-                    if(vertical_stretch) widget_children[i]->widget_transform.size.y += containerHeight - widget_children[i]->widget_transform.size.y;
+                    if (vertical_stretch)
+                        widget_children[i]->widget_transform.size.y += containerHeight - widget_children[i]->widget_transform.size.y;
 
                     // Position the widget in the current row.
                     widget_children[i]->widget_transform.position.x = currentX + widget_children[i]->widget_transform.size.x / 2.0f;
