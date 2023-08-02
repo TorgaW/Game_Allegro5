@@ -31,6 +31,10 @@ public:
 
     float elements_gap_x{0.f};
 
+    bool horizontal_stretch{true};
+
+    bool vertical_stretch{true};
+
     virtual void Update(float delta);
 
     virtual void Draw(float delta);

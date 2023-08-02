@@ -2,6 +2,16 @@
 
 void TextWidget::Draw(float delta)
 {
+    al_draw_rounded_rectangle(
+        widget_transform.position.x - widget_transform.size.x / 2.0f,
+        widget_transform.position.y - widget_transform.size.y / 2.0f,
+        widget_transform.position.x + widget_transform.size.x / 2.0f,
+        widget_transform.position.y + widget_transform.size.y / 2.0f,
+        20.f,
+        20.f,
+        al_map_rgba(100, 100, 100, 50),
+        2.f);
+
     al_draw_text(
         text_font,
         text_color,
@@ -13,7 +23,6 @@ void TextWidget::Draw(float delta)
 
 void TextWidget::Begin()
 {
-
 }
 
 void TextWidget::Update(float delta)

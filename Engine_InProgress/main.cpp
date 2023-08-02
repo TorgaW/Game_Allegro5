@@ -53,7 +53,7 @@ int main(int argc, char const *argv[])
     container->SetBackgroundColor(al_map_rgba(100, 100, 100, 20));
     container->SetBorderRadius(20.f);
     container->SetPivotPoint({0.5f, 0.5f});
-    container->SetElementsAlignment(Alignment::MiddleLeft);
+    container->SetElementsAlignment(Alignment::UpperLeft);
 
     auto text1 = WidgetManager::CreateWidget<TextWidget>("TextWidget_1", "class_TextWidget");
     text1->SetFont(EngineFonts::Ubuntu30R);
