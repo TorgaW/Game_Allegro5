@@ -23,6 +23,8 @@ set(UI
 #
 #write new UI widget .cpp files here
 UI/Canvas/CanvasWidget.cpp 
+UI/TextWidget/TextWidget.cpp
+UI/HorizontalBox/HorizontalBox.cpp
 #
 )
 
