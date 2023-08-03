@@ -3,20 +3,20 @@
 void TextWidget::Draw(float delta)
 {
     al_draw_rounded_rectangle(
-        widget_transform.position.x - widget_transform.size.x / 2.0f,
-        widget_transform.position.y - widget_transform.size.y / 2.0f,
-        widget_transform.position.x + widget_transform.size.x / 2.0f,
-        widget_transform.position.y + widget_transform.size.y / 2.0f,
-        20.f,
-        20.f,
+        int(widget_transform.position.x - widget_transform.size.x / 2.0f),
+        int(widget_transform.position.y - widget_transform.size.y / 2.0f),
+        int(widget_transform.position.x + widget_transform.size.x / 2.0f),
+        int(widget_transform.position.y + widget_transform.size.y / 2.0f),
+        20,
+        20,
         al_map_rgba(100, 100, 100, 50),
-        2.f);
+        2);
 
     al_draw_text(
         text_font,
         text_color,
-        widget_transform.position.x,
-        widget_transform.position.y - al_get_font_line_height(text_font) / 2.0f,
+        int(widget_transform.position.x),
+        int(widget_transform.position.y - al_get_font_line_height(text_font) / 2.0f),
         ALLEGRO_ALIGN_CENTER,
         text.c_str());
 }

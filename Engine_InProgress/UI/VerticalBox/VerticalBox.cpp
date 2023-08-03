@@ -1,6 +1,6 @@
-#include "HorizontalBox.hpp"
+#include "VerticalBox.hpp"
 
-void HorizontalBox::Draw(float delta)
+void VerticalBox::Draw(float delta)
 {
     al_draw_filled_rounded_rectangle(
         widget_transform.position.x - widget_transform.size.x * widget_pivot_point.x,
@@ -22,7 +22,7 @@ void HorizontalBox::Draw(float delta)
         border_thickness);
 }
 
-void HorizontalBox::Update(float delta)
+void VerticalBox::Update(float delta)
 {
     if (requestAlignmentRender)
     {
@@ -66,47 +66,47 @@ void HorizontalBox::Update(float delta)
             else if (widget_children.size() > 1)
             {
                 // Count total elements width with gaps to set them in the center
-                float totalElementsWidth{0.f};
+                float totalElementsHeight{0.f};
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
-                    totalElementsWidth += widget_children[i]->widget_transform.size.x;
+                    totalElementsHeight += widget_children[i]->widget_transform.size.y;
                 }
-                totalElementsWidth += (widget_children.size() - 1) * elements_gap_x;
+                totalElementsHeight += (widget_children.size() - 1) * elements_gap_y;
 
-                // Counting additional size in order to stretch all the elements or reduce their length
-                float widthToAddToElement = 0.f;
-                float widthToReduceFromElement = 0.f;
+                // Counting additional size in order to stretch all the elements or reduce their height
+                float heightToAddToElement = 0.f;
+                float heightToReduceFromElement = 0.f;
 
                 // Initial values
                 float currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
                 float currentY = widget_transform.position.y - widget_transform.size.y / 2.0f + padding.y;
 
-                if (totalElementsWidth >= (containerWidth - padding.x - padding.z))
+                if (totalElementsHeight >= (containerHeight - padding.y - padding.w))
                 {
-                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    heightToReduceFromElement = (containerHeight - padding.y - padding.w - totalElementsHeight) / widget_children.size();
                 }
-                else if (horizontal_stretch)
-                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                else if (vertical_stretch)
+                    heightToAddToElement = (containerHeight - padding.y - padding.w - totalElementsHeight) / widget_children.size();
 
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
-                    // It may stretch all the elements up or reduce their length
-                    widget_children[i]->widget_transform.size.x += widthToAddToElement + widthToReduceFromElement;
+                    // It may stretch all the elements up or reduce their height
+                    widget_children[i]->widget_transform.size.y += heightToAddToElement + heightToReduceFromElement;
 
-                    // Stretch the elements on the vertical axis
-                    if (widget_children[i]->widget_transform.size.y >= (containerHeight - padding.y - padding.w))
+                    // Stretch the elements on the horizontal axis
+                    if (widget_children[i]->widget_transform.size.x >= (containerWidth - padding.x - padding.z))
                     {
-                        widget_children[i]->widget_transform.size.y = containerHeight - padding.y - padding.w;
+                        widget_children[i]->widget_transform.size.x = containerWidth - padding.x - padding.z;
                     }
-                    else if (vertical_stretch)
-                        widget_children[i]->widget_transform.size.y += containerHeight - padding.y - padding.w - widget_children[i]->widget_transform.size.y;
+                    else if (horizontal_stretch)
+                        widget_children[i]->widget_transform.size.x += containerWidth - padding.x - padding.z - widget_children[i]->widget_transform.size.x;
 
                     // Position the widget in the current row.
                     widget_children[i]->widget_transform.position.x = currentX + widget_children[i]->widget_transform.size.x / 2.0f;
                     widget_children[i]->widget_transform.position.y = currentY + widget_children[i]->widget_transform.size.y / 2.0f;
 
-                    // Move the currentX position to the right for the next widget in the row.
-                    currentX += elements_gap_x + widget_children[i]->widget_transform.size.x;
+                    // Move the currentY position to the right for the next widget in the row.
+                    currentY += elements_gap_y + widget_children[i]->widget_transform.size.y;
                 }
             };
 
@@ -152,51 +152,64 @@ void HorizontalBox::Update(float delta)
             else if (widget_children.size() > 1)
             {
                 // Count total elements width with gaps to set them in the center
-                float totalElementsWidth{0.f};
+                float totalElementsHeight{0.f};
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
-                    totalElementsWidth += widget_children[i]->widget_transform.size.x;
+                    totalElementsHeight += widget_children[i]->widget_transform.size.y;
                 }
-                totalElementsWidth += (widget_children.size() - 1) * elements_gap_x;
+                totalElementsHeight += (widget_children.size() - 1) * elements_gap_y;
 
                 // Counting additional size in order to stretch all the elements or reduce their length
-                float widthToAddToElement = 0.f;
-                float widthToReduceFromElement = 0.f;
+                float heightToAddToElement = 0.f;
+                float heightToReduceFromElement = 0.f;
 
                 // Initial values
-                float currentX = widget_transform.position.x - containerWidth / 2.0f + (containerWidth - totalElementsWidth) / 2.0f;
+                float currentX = widget_transform.position.x;
                 float currentY = widget_transform.position.y - widget_transform.size.y / 2.0f + padding.y;
 
-                if (totalElementsWidth >= (containerWidth - padding.x - padding.z))
+                if (totalElementsHeight >= (containerHeight - padding.y - padding.w))
                 {
-                    currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    heightToReduceFromElement = (containerHeight - padding.y - padding.w - totalElementsHeight) / widget_children.size();
                 }
-                else if (horizontal_stretch)
+                else if (vertical_stretch)
                 {
-                    currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    heightToAddToElement = (containerHeight - padding.y - padding.w - totalElementsHeight) / widget_children.size();
                 }
 
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
                     // It may stretch all the elements up or reduce their length
-                    widget_children[i]->widget_transform.size.x += widthToAddToElement + widthToReduceFromElement;
+                    widget_children[i]->widget_transform.size.y += heightToAddToElement + heightToReduceFromElement;
 
-                    // Stretch the elements on the vertical axis
-                    if (widget_children[i]->widget_transform.size.y >= (containerHeight - padding.y - padding.w))
+                    // Checking if the widget is longer then container.
+                    if (widget_children[i]->widget_transform.size.x >= containerWidth - padding.x - padding.z)
+                        widget_children[i]->widget_transform.size.x = containerWidth - padding.x - padding.z;
+
+                    // Set all the elements vertically stretched if its needed
+                    if (horizontal_stretch)
                     {
-                        widget_children[i]->widget_transform.size.y = containerHeight - padding.y - padding.w;
+                        widget_children[i]->widget_transform.size.x += containerWidth - padding.x - padding.z - widget_children[i]->widget_transform.size.x;
+                        currentX = widget_transform.position.x - containerWidth / 2.0f + widget_children[i]->widget_transform.size.x / 2.0f + padding.x;
                     }
-                    else if (vertical_stretch)
-                        widget_children[i]->widget_transform.size.y += containerHeight - padding.y - padding.w - widget_children[i]->widget_transform.size.y;
+                    // Check if the widget borders with the left padding. If it does we will move it righter
+                    else if (widget_children[i]->widget_transform.size.x / 2.0f >= (containerWidth / 2.0f - padding.x))
+                    {
+                        currentX = widget_transform.position.x - containerWidth / 2.0f + widget_children[i]->widget_transform.size.x / 2.0f + padding.x;
+                    }
+                    // Check if the widget borders with the right padding. If it does we will move it lefter
+                    else if (widget_children[i]->widget_transform.size.x / 2.0f >= (containerWidth / 2.0f - padding.z))
+                    {
+                        currentX = widget_transform.position.x - containerWidth / 2.0f + widget_children[i]->widget_transform.size.x / 2.0f + padding.z;
+                    }
 
                     // Position the widget in the current row.
-                    widget_children[i]->widget_transform.position.x = currentX + widget_children[i]->widget_transform.size.x / 2.0f;
+                    widget_children[i]->widget_transform.position.x = currentX;
                     widget_children[i]->widget_transform.position.y = currentY + widget_children[i]->widget_transform.size.y / 2.0f;
 
-                    // Move the currentX position to the right for the next widget in the row.
-                    currentX += elements_gap_x + widget_children[i]->widget_transform.size.x;
+                    // Reset X coordinate
+                    currentX = widget_transform.position.x;
+                    // Move the currentY position to the right for the next widget in the row.
+                    currentY += elements_gap_y + widget_children[i]->widget_transform.size.y;
                 }
             };
 
@@ -241,52 +254,51 @@ void HorizontalBox::Update(float delta)
             }
             else if (widget_children.size() > 1)
             {
-                // Count total elements width with gaps to set them in the center
-                float totalElementsWidth{0.f};
+                // Count total elements width with gaps to set them
+                float totalElementsHeight{0.f};
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
-                    totalElementsWidth += widget_children[i]->widget_transform.size.x;
+                    totalElementsHeight += widget_children[i]->widget_transform.size.y;
                 }
-                totalElementsWidth += (widget_children.size() - 1) * elements_gap_x;
+                totalElementsHeight += (widget_children.size() - 1) * elements_gap_y;
 
                 // Counting additional size in order to stretch all the elements or reduce their length
-                float widthToAddToElement = 0.f;
-                float widthToReduceFromElement = 0.f;
+                float heightToAddToElement = 0.f;
+                float heightToReduceFromElement = 0.f;
 
                 // Initial values
-                float currentX = widget_transform.position.x - containerWidth / 2.0f + (containerWidth - totalElementsWidth) - padding.z;
+                float currentX = widget_transform.position.x + containerWidth / 2.0f - padding.z;
                 float currentY = widget_transform.position.y - widget_transform.size.y / 2.0f + padding.y;
 
-                if (totalElementsWidth >= (containerWidth - padding.x - padding.z))
+                if (totalElementsHeight >= (containerHeight - padding.y - padding.w))
                 {
-                    currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    heightToReduceFromElement = (containerHeight - padding.y - padding.w - totalElementsHeight) / widget_children.size();
                 }
-                else if (horizontal_stretch)
+                else if (vertical_stretch)
                 {
-                    currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+
+                    heightToAddToElement = (containerHeight - padding.y - padding.w - totalElementsHeight) / widget_children.size();
                 }
 
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
                     // It may stretch all the elements up or reduce their length
-                    widget_children[i]->widget_transform.size.x += widthToAddToElement + widthToReduceFromElement;
+                    widget_children[i]->widget_transform.size.y += heightToAddToElement + heightToReduceFromElement;
 
-                    // Stretch the elements on the vertical axis
-                    if (widget_children[i]->widget_transform.size.y >= (containerHeight - padding.y - padding.w))
+                    // Stretch the elements on the horizontal axis
+                    if (widget_children[i]->widget_transform.size.x >= (containerWidth - padding.x - padding.z))
                     {
-                        widget_children[i]->widget_transform.size.y = containerHeight - padding.y - padding.w;
+                        widget_children[i]->widget_transform.size.x = containerWidth - padding.x - padding.z;
                     }
-                    else if (vertical_stretch)
-                        widget_children[i]->widget_transform.size.y += containerHeight - padding.y - padding.w - widget_children[i]->widget_transform.size.y;
+                    else if (horizontal_stretch)
+                        widget_children[i]->widget_transform.size.x += containerWidth - padding.x - padding.z - widget_children[i]->widget_transform.size.x;
 
                     // Position the widget in the current row.
-                    widget_children[i]->widget_transform.position.x = currentX + widget_children[i]->widget_transform.size.x / 2.0f;
+                    widget_children[i]->widget_transform.position.x = currentX - widget_children[i]->widget_transform.size.x / 2.0f;
                     widget_children[i]->widget_transform.position.y = currentY + widget_children[i]->widget_transform.size.y / 2.0f;
 
                     // Move the currentX position to the right for the next widget in the row.
-                    currentX += elements_gap_x + widget_children[i]->widget_transform.size.x;
+                    currentY += elements_gap_y + widget_children[i]->widget_transform.size.y;
                 }
             };
 
@@ -332,62 +344,66 @@ void HorizontalBox::Update(float delta)
             else if (widget_children.size() > 1)
             {
                 // Count total elements width with gaps to set them in the center
-                float totalElementsWidth{0.f};
+                float totalElementsHeight{0.f};
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
-                    totalElementsWidth += widget_children[i]->widget_transform.size.x;
+                    totalElementsHeight += widget_children[i]->widget_transform.size.y;
                 }
-                totalElementsWidth += (widget_children.size() - 1) * elements_gap_x;
+                totalElementsHeight += (widget_children.size() - 1) * elements_gap_y;
 
                 // Counting additional size in order to stretch all the elements or reduce their length
-                float widthToAddToElement = 0.f;
-                float widthToReduceFromElement = 0.f;
+                float heightToAddToElement = 0.f;
+                float heightToReduceFromElement = 0.f;
 
                 // Initial values
                 float currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                float currentY = widget_transform.position.y;
+                float currentY = widget_transform.position.y - containerHeight / 2.0f + (containerHeight - totalElementsHeight) / 2.0f + padding.y;
 
-                if (totalElementsWidth >= (containerWidth - padding.x - padding.z))
+                if (totalElementsHeight >= (containerHeight - padding.y - padding.w))
                 {
-                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    currentY = widget_transform.position.y - containerHeight / 2.0f + padding.y;
+                    heightToReduceFromElement = (containerHeight - padding.y - padding.w - totalElementsHeight) / widget_children.size();
                 }
-                else if (horizontal_stretch)
-                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                else if (vertical_stretch)
+                {
+                    currentY = widget_transform.position.y - containerHeight / 2.0f + padding.y;
+                    heightToAddToElement = (containerHeight - padding.y - padding.w - totalElementsHeight) / widget_children.size();
+                }
 
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
                     // It may stretch all the elements up or reduce their length
-                    widget_children[i]->widget_transform.size.x += widthToAddToElement + widthToReduceFromElement;
+                    widget_children[i]->widget_transform.size.y += heightToAddToElement + heightToReduceFromElement;
 
-                    // Checking if the widget is higher then container.
-                    if (widget_children[i]->widget_transform.size.y >= containerHeight - padding.y - padding.w)
-                        widget_children[i]->widget_transform.size.y = containerHeight - padding.y - padding.w;
+                    // Checking if the widget is longer then container.
+                    if (widget_children[i]->widget_transform.size.x >= containerWidth - padding.x - padding.z)
+                        widget_children[i]->widget_transform.size.x = containerWidth - padding.x - padding.z;
 
                     // Set all the elements vertically stretched if its needed
-                    if (vertical_stretch)
+                    if (horizontal_stretch)
                     {
-                        widget_children[i]->widget_transform.size.y += containerHeight - padding.y - padding.w - widget_children[i]->widget_transform.size.y;
-                        currentY = widget_transform.position.y - containerHeight / 2.0f + widget_children[i]->widget_transform.size.y / 2.0f + padding.y;
+                        widget_children[i]->widget_transform.size.x += containerWidth - padding.x - padding.z - widget_children[i]->widget_transform.size.x;
+                        currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
                     }
-                    // Check if the widget borders with the top padding. If it does we will move it lower
-                    else if (widget_children[i]->widget_transform.size.y / 2.0f >= (containerHeight / 2.0f - padding.y))
+                    // Check if the widget borders with the left padding. If it does we will move it righter
+                    else if (widget_children[i]->widget_transform.size.x / 2.0f >= (containerWidth / 2.0f - padding.x))
                     {
-                        currentY = widget_transform.position.y - containerHeight / 2.0f + widget_children[i]->widget_transform.size.y / 2.0f + padding.y;
+                        currentX = widget_transform.position.x - containerWidth / 2.0f + widget_children[i]->widget_transform.size.x / 2.0f + padding.x;
                     }
-                    // Check if the widget borders with the bottom padding. If it does we will move it upper
-                    else if (widget_children[i]->widget_transform.size.y / 2.0f >= (containerHeight / 2.0f - padding.w))
+                    // Check if the widget borders with the right padding. If it does we will move it lefter
+                    else if (widget_children[i]->widget_transform.size.x / 2.0f >= (containerWidth / 2.0f - padding.z))
                     {
-                        currentY = widget_transform.position.y - containerHeight / 2.0f + widget_children[i]->widget_transform.size.y / 2.0f + padding.w;
+                        currentX = widget_transform.position.x - containerWidth / 2.0f + widget_children[i]->widget_transform.size.x / 2.0f + padding.z;
                     }
 
                     // Position the widget in the current row.
                     widget_children[i]->widget_transform.position.x = currentX + widget_children[i]->widget_transform.size.x / 2.0f;
-                    widget_children[i]->widget_transform.position.y = currentY;
+                    widget_children[i]->widget_transform.position.y = currentY + widget_children[i]->widget_transform.size.y / 2.0f;
 
-                    // Reset Y coordinate
-                    currentY = widget_transform.position.y;
-                    // Move the currentX position to the right for the next widget in the row.
-                    currentX += elements_gap_x + widget_children[i]->widget_transform.size.x;
+                    // Reset X coordinate
+                    currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
+                    // Move the currentY position to the right for the next widget in the row.
+                    currentY += elements_gap_y + widget_children[i]->widget_transform.size.y;
                 }
             };
 
@@ -433,66 +449,66 @@ void HorizontalBox::Update(float delta)
             else if (widget_children.size() > 1)
             {
                 // Count total elements width with gaps to set them in the center
-                float totalElementsWidth{0.f};
+                float totalElementsHeight{0.f};
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
-                    totalElementsWidth += widget_children[i]->widget_transform.size.x;
+                    totalElementsHeight += widget_children[i]->widget_transform.size.y;
                 }
-                totalElementsWidth += (widget_children.size() - 1) * elements_gap_x;
+                totalElementsHeight += (widget_children.size() - 1) * elements_gap_y;
 
                 // Counting additional size in order to stretch all the elements or reduce their length
-                float widthToAddToElement = 0.f;
-                float widthToReduceFromElement = 0.f;
+                float heightToAddToElement = 0.f;
+                float heightToReduceFromElement = 0.f;
 
                 // Initial values
-                float currentX = widget_transform.position.x - containerWidth / 2.0f + (containerWidth - totalElementsWidth) / 2.0f;
-                float currentY = widget_transform.position.y;
+                float currentX = widget_transform.position.x;
+                float currentY = widget_transform.position.y - containerHeight / 2.0f + (containerHeight - totalElementsHeight) / 2.0f + padding.y;
 
-                if (totalElementsWidth >= (containerWidth - padding.x - padding.z))
+                if (totalElementsHeight >= (containerHeight - padding.y - padding.w))
                 {
-                    currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    currentY = widget_transform.position.y - containerHeight / 2.0f + padding.y;
+                    heightToReduceFromElement = (containerHeight - padding.y - padding.w - totalElementsHeight) / widget_children.size();
                 }
-                else if (horizontal_stretch)
+                else if (vertical_stretch)
                 {
-                    currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    currentY = widget_transform.position.y - containerHeight / 2.0f + padding.y;
+                    heightToAddToElement = (containerHeight - padding.y - padding.w - totalElementsHeight) / widget_children.size();
                 }
 
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
                     // It may stretch all the elements up or reduce their length
-                    widget_children[i]->widget_transform.size.x += widthToAddToElement + widthToReduceFromElement;
+                    widget_children[i]->widget_transform.size.y += heightToAddToElement + heightToReduceFromElement;
 
-                    // Checking if the widget is higher then container.
-                    if (widget_children[i]->widget_transform.size.y >= containerHeight - padding.y - padding.w)
-                        widget_children[i]->widget_transform.size.y = containerHeight - padding.y - padding.w;
+                    // Checking if the widget is longer then container.
+                    if (widget_children[i]->widget_transform.size.x >= containerWidth - padding.x - padding.z)
+                        widget_children[i]->widget_transform.size.x = containerWidth - padding.x - padding.z;
 
                     // Set all the elements vertically stretched if its needed
-                    if (vertical_stretch)
+                    if (horizontal_stretch)
                     {
-                        widget_children[i]->widget_transform.size.y += containerHeight - padding.y - padding.w - widget_children[i]->widget_transform.size.y;
-                        currentY = widget_transform.position.y - containerHeight / 2.0f + widget_children[i]->widget_transform.size.y / 2.0f + padding.y;
+                        widget_children[i]->widget_transform.size.x += containerWidth - padding.x - padding.z - widget_children[i]->widget_transform.size.x;
+                        currentX = widget_transform.position.x - containerWidth / 2.0f + widget_children[i]->widget_transform.size.x / 2.0f + padding.x;
                     }
-                    // Check if the widget borders with the top padding. If it does we will move it lower
-                    else if (widget_children[i]->widget_transform.size.y / 2.0f >= (containerHeight / 2.0f - padding.y))
+                    // Check if the widget borders with the left padding. If it does we will move it righter
+                    else if (widget_children[i]->widget_transform.size.x / 2.0f >= (containerWidth / 2.0f - padding.x))
                     {
-                        currentY = widget_transform.position.y - containerHeight / 2.0f + widget_children[i]->widget_transform.size.y / 2.0f + padding.y;
+                        currentX = widget_transform.position.x - containerWidth / 2.0f + widget_children[i]->widget_transform.size.x / 2.0f + padding.x;
                     }
-                    // Check if the widget borders with the bottom padding. If it does we will move it upper
-                    else if (widget_children[i]->widget_transform.size.y / 2.0f >= (containerHeight / 2.0f - padding.w))
+                    // Check if the widget borders with the right padding. If it does we will move it lefter
+                    else if (widget_children[i]->widget_transform.size.x / 2.0f >= (containerWidth / 2.0f - padding.z))
                     {
-                        currentY = widget_transform.position.y - containerHeight / 2.0f + widget_children[i]->widget_transform.size.y / 2.0f + padding.w;
+                        currentX = widget_transform.position.x - containerWidth / 2.0f + widget_children[i]->widget_transform.size.x / 2.0f + padding.z;
                     }
 
                     // Position the widget in the current row.
-                    widget_children[i]->widget_transform.position.x = currentX + widget_children[i]->widget_transform.size.x / 2.0f;
-                    widget_children[i]->widget_transform.position.y = currentY;
+                    widget_children[i]->widget_transform.position.x = currentX;
+                    widget_children[i]->widget_transform.position.y = currentY + widget_children[i]->widget_transform.size.y / 2.0f;
 
                     // Reset Y coordinate
-                    currentY = widget_transform.position.y;
+                    currentX = widget_transform.position.x;
                     // Move the currentX position to the right for the next widget in the row.
-                    currentX += elements_gap_x + widget_children[i]->widget_transform.size.x;
+                    currentY += elements_gap_y + widget_children[i]->widget_transform.size.y;
                 }
             };
 
@@ -538,30 +554,33 @@ void HorizontalBox::Update(float delta)
             else if (widget_children.size() > 1)
             {
                 // Count total elements width with gaps to set them in the center
-                float totalElementsWidth{0.f};
+                float totalElementsHeight{0.f};
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
-                    totalElementsWidth += widget_children[i]->widget_transform.size.x;
+                    totalElementsHeight += widget_children[i]->widget_transform.size.x;
                 }
-                totalElementsWidth += (widget_children.size() - 1) * elements_gap_x;
+                totalElementsHeight += (widget_children.size() - 1) * elements_gap_y;
 
                 // Counting additional size in order to stretch all the elements or reduce their length
                 float widthToAddToElement = 0.f;
+                float heightToAddToElement = 0.f;
+
                 float widthToReduceFromElement = 0.f;
+                float heightToReduceFromElement = 0.f;
 
                 // Initial values
-                float currentX = widget_transform.position.x - containerWidth / 2.0f + (containerWidth - totalElementsWidth) - padding.z;
+                float currentX = widget_transform.position.x - containerWidth / 2.0f + (containerWidth - totalElementsHeight) - padding.z;
                 float currentY = widget_transform.position.y;
 
-                if (totalElementsWidth >= (containerWidth - padding.x - padding.z))
+                if (totalElementsHeight >= (containerWidth - padding.x - padding.z))
                 {
                     currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsHeight) / widget_children.size();
                 }
                 else if (horizontal_stretch)
                 {
                     currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsHeight) / widget_children.size();
                 }
 
                 for (size_t i = 0; i < widget_children.size(); i++)
@@ -597,7 +616,7 @@ void HorizontalBox::Update(float delta)
                     // Reset Y coordinate
                     currentY = widget_transform.position.y;
                     // Move the currentX position to the right for the next widget in the row.
-                    currentX += elements_gap_x + widget_children[i]->widget_transform.size.x;
+                    currentX += elements_gap_y + widget_children[i]->widget_transform.size.x;
                 }
             };
 
@@ -643,27 +662,30 @@ void HorizontalBox::Update(float delta)
             else if (widget_children.size() > 1)
             {
                 // Count total elements width with gaps to set them in the center
-                float totalElementsWidth{0.f};
+                float totalElementsHeight{0.f};
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
-                    totalElementsWidth += widget_children[i]->widget_transform.size.x;
+                    totalElementsHeight += widget_children[i]->widget_transform.size.x;
                 }
-                totalElementsWidth += (widget_children.size() - 1) * elements_gap_x;
+                totalElementsHeight += (widget_children.size() - 1) * elements_gap_y;
 
                 // Counting additional size in order to stretch all the elements or reduce their length
                 float widthToAddToElement = 0.f;
+                float heightToAddToElement = 0.f;
+
                 float widthToReduceFromElement = 0.f;
+                float heightToReduceFromElement = 0.f;
 
                 // Initial values
                 float currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
                 float currentY = widget_transform.position.y + widget_transform.size.y / 2.0f - padding.w;
 
-                if (totalElementsWidth >= (containerWidth - padding.x - padding.z))
+                if (totalElementsHeight >= (containerWidth - padding.x - padding.z))
                 {
-                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsHeight) / widget_children.size();
                 }
                 else if (horizontal_stretch)
-                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsHeight) / widget_children.size();
 
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
@@ -683,7 +705,7 @@ void HorizontalBox::Update(float delta)
                     widget_children[i]->widget_transform.position.y = currentY - widget_children[i]->widget_transform.size.y / 2.0f;
 
                     // Move the currentX position to the right for the next widget in the row.
-                    currentX += elements_gap_x + widget_children[i]->widget_transform.size.x;
+                    currentX += elements_gap_y + widget_children[i]->widget_transform.size.x;
                 }
             };
 
@@ -729,30 +751,33 @@ void HorizontalBox::Update(float delta)
             else if (widget_children.size() > 1)
             {
                 // Count total elements width with gaps to set them in the center
-                float totalElementsWidth{0.f};
+                float totalElementsHeight{0.f};
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
-                    totalElementsWidth += widget_children[i]->widget_transform.size.x;
+                    totalElementsHeight += widget_children[i]->widget_transform.size.x;
                 }
-                totalElementsWidth += (widget_children.size() - 1) * elements_gap_x;
+                totalElementsHeight += (widget_children.size() - 1) * elements_gap_y;
 
                 // Counting additional size in order to stretch all the elements or reduce their length
                 float widthToAddToElement = 0.f;
+                float heightToAddToElement = 0.f;
+
                 float widthToReduceFromElement = 0.f;
+                float heightToReduceFromElement = 0.f;
 
                 // Initial values
-                float currentX = widget_transform.position.x - containerWidth / 2.0f + (containerWidth - totalElementsWidth) / 2.0f;
+                float currentX = widget_transform.position.x - containerWidth / 2.0f + (containerWidth - totalElementsHeight) / 2.0f;
                 float currentY = widget_transform.position.y + widget_transform.size.y / 2.0f - padding.w;
 
-                if (totalElementsWidth >= (containerWidth - padding.x - padding.z))
+                if (totalElementsHeight >= (containerWidth - padding.x - padding.z))
                 {
                     currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsHeight) / widget_children.size();
                 }
                 else if (horizontal_stretch)
                 {
                     currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsHeight) / widget_children.size();
                 }
 
                 for (size_t i = 0; i < widget_children.size(); i++)
@@ -773,7 +798,7 @@ void HorizontalBox::Update(float delta)
                     widget_children[i]->widget_transform.position.y = currentY - widget_children[i]->widget_transform.size.y / 2.0f;
 
                     // Move the currentX position to the right for the next widget in the row.
-                    currentX += elements_gap_x + widget_children[i]->widget_transform.size.x;
+                    currentX += elements_gap_y + widget_children[i]->widget_transform.size.x;
                 }
             };
 
@@ -819,30 +844,33 @@ void HorizontalBox::Update(float delta)
             else if (widget_children.size() > 1)
             {
                 // Count total elements width with gaps to set them in the center
-                float totalElementsWidth{0.f};
+                float totalElementsHeight{0.f};
                 for (size_t i = 0; i < widget_children.size(); i++)
                 {
-                    totalElementsWidth += widget_children[i]->widget_transform.size.x;
+                    totalElementsHeight += widget_children[i]->widget_transform.size.x;
                 }
-                totalElementsWidth += (widget_children.size() - 1) * elements_gap_x;
+                totalElementsHeight += (widget_children.size() - 1) * elements_gap_y;
 
                 // Counting additional size in order to stretch all the elements or reduce their length
                 float widthToAddToElement = 0.f;
+                float heightToAddToElement = 0.f;
+
                 float widthToReduceFromElement = 0.f;
+                float heightToReduceFromElement = 0.f;
 
                 // Initial values
-                float currentX = widget_transform.position.x - containerWidth / 2.0f + (containerWidth - totalElementsWidth) - padding.z;
+                float currentX = widget_transform.position.x - containerWidth / 2.0f + (containerWidth - totalElementsHeight) - padding.z;
                 float currentY = widget_transform.position.y + widget_transform.size.y / 2.0f - padding.w;
 
-                if (totalElementsWidth >= (containerWidth - padding.x - padding.z))
+                if (totalElementsHeight >= (containerWidth - padding.x - padding.z))
                 {
                     currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    widthToReduceFromElement = (containerWidth - padding.z - padding.x - totalElementsHeight) / widget_children.size();
                 }
                 else if (horizontal_stretch)
                 {
                     currentX = widget_transform.position.x - containerWidth / 2.0f + padding.x;
-                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsWidth) / widget_children.size();
+                    widthToAddToElement = (containerWidth - padding.z - padding.x - totalElementsHeight) / widget_children.size();
                 }
 
                 for (size_t i = 0; i < widget_children.size(); i++)
@@ -863,7 +891,7 @@ void HorizontalBox::Update(float delta)
                     widget_children[i]->widget_transform.position.y = currentY - widget_children[i]->widget_transform.size.y / 2.0f;
 
                     // Move the currentX position to the right for the next widget in the row.
-                    currentX += elements_gap_x + widget_children[i]->widget_transform.size.x;
+                    currentX += elements_gap_y + widget_children[i]->widget_transform.size.x;
                 }
             };
 

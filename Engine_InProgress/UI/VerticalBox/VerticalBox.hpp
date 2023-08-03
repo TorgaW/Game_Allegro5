@@ -1,22 +1,10 @@
-#ifndef DA9AC788_B999_4293_9BEC_C38A514E2DBC
-#define DA9AC788_B999_4293_9BEC_C38A514E2DBC
+#ifndef CBBEB7B5_CAC6_4D61_A03A_C9CA78261FFF
+#define CBBEB7B5_CAC6_4D61_A03A_C9CA78261FFF
 
 #include "../Widget/Widget.hpp"
+#include "../HorizontalBox/HorizontalBox.hpp"
 
-enum Alignment
-{
-    UpperLeft = 0,
-    UpperCenter,
-    UpperRight,
-    MiddleLeft,
-    MiddleCenter,
-    MiddleRight,
-    LowerLeft,
-    LowerCenter,
-    LowerRight,
-};
-
-class HorizontalBox : public Widget
+class VerticalBox : public Widget
 {
 public:
     float border_thickness{0.f};
@@ -29,7 +17,7 @@ public:
 
     Alignment container_alignment{UpperLeft};
 
-    float elements_gap_x{0.f};
+    float elements_gap_y{0.f};
 
     bool horizontal_stretch{false};
 
@@ -47,7 +35,7 @@ public:
 
     inline void SetVerticalStretch(bool isEnabled) { vertical_stretch = isEnabled; };
 
-    inline void SetElementsGap(float new_elements_gap_x) { elements_gap_x = new_elements_gap_x; };
+    inline void SetElementsGap(float new_elements_gap_x) { elements_gap_y = new_elements_gap_x; };
 
     inline void SetElementsAlignment(Alignment new_elements_alignment)
     {
@@ -63,11 +51,11 @@ public:
 
     inline void SetBorderColor(ALLEGRO_COLOR new_border_color) { border_color = new_border_color; };
 
-    HorizontalBox(const std::string &_obj_class, const ObjectSignature &obj_sign) : Widget(_obj_class, obj_sign){};
-    ~HorizontalBox(){};
+    VerticalBox(const std::string &_obj_class, const ObjectSignature &obj_sign) : Widget(_obj_class, obj_sign){};
+    ~VerticalBox(){};
 
 protected:
     bool requestAlignmentRender{true};
 };
 
-#endif /* DA9AC788_B999_4293_9BEC_C38A514E2DBC */
+#endif /* CBBEB7B5_CAC6_4D61_A03A_C9CA78261FFF */

@@ -5,5 +5,6 @@
 #include "Canvas/CanvasWidget.hpp"
 #include "TextWidget/TextWidget.hpp"
 #include "HorizontalBox/HorizontalBox.hpp"
+#include "VerticalBox/VerticalBox.hpp"
 
 #endif /* B6A74E65_9B62_4E3C_AD77_B46B7EAB5852 */

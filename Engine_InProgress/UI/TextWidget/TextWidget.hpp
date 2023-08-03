@@ -9,7 +9,7 @@ public:
     ALLEGRO_FONT *text_font{nullptr};
     ALLEGRO_COLOR text_color{al_map_rgb(255, 255, 255)};
     
-    Vec2 text_position;
+    Vec4 text_position;
 
     std::string text;
 

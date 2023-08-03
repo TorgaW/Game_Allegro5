@@ -25,6 +25,7 @@ set(UI
 UI/Canvas/CanvasWidget.cpp 
 UI/TextWidget/TextWidget.cpp
 UI/HorizontalBox/HorizontalBox.cpp
+UI/VerticalBox/VerticalBox.cpp
 #
 )
 
