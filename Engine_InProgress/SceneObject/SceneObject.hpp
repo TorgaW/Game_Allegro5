@@ -26,10 +26,7 @@ public:
     /**
      * @brief called once on object creation.
      */
-    virtual void Begin()
-    {
-        scene_object_bitmap = BitmapManager::LoadBitmap("Resources/Sprites/char_placeholder.png");
-    };
+    virtual void Begin(){};
 
     /**
      * @brief called every frame before Draw() function.
@@ -41,10 +38,7 @@ public:
     /**
      * @brief called every frame after Update(). used to draw graphics.
      */
-    virtual void Draw(float delta)
-    {
-        al_draw_bitmap(scene_object_bitmap, transform.position.x, transform.position.y, 0);
-    };
+    virtual void Draw(float delta){};
 
     /**
      * @brief called once when object marked as pending kill. in other words - before destruction.

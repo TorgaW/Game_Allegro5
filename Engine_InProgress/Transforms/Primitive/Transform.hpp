@@ -7,7 +7,7 @@ struct Transform
 {
     Vec2 position;
     Vec2 size;
-    Vec2 scale;
+    Vec2 scale {1.0f, 1.0f};
     float rotation;
 
     Transform():rotation(0.0f){};
@@ -18,7 +18,7 @@ struct Transform
     inline void Reset()
     {
         position.Reset();
-        scale.Reset();
+        scale = {1.0f, 1.0f};
         size.Reset();
         rotation = 0.0f;
     }

@@ -7,6 +7,7 @@
 #include "../UI/WidgetManager/WidgetManager.hpp"
 #include "../Input/InputManager.hpp"
 #include "../SceneManager/SceneManager.hpp"
+#include "../ShaderManager/ShaderManager.hpp"
 
 class Game
 {

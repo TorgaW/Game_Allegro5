@@ -1,20 +1,25 @@
 // #include "Scene/Scene.hpp"
 // #include "SceneManager/SceneManager.hpp"
 #include "Engine.hpp"
+#include "Chunk_dev/Chunk_dev.hpp"
+#include "WorldGeneration/WorldLoader/WorldLoader.hpp"
+#include "Camera/Camera.hpp"
 
 int main(int argc, char const *argv[])
 {
     Game g;
     g.InitGame();
 
+    auto cc = SceneManager::CreateSceneObject<WorldLoader>("WorldLoader_1", "class_WorldLoader");
+    auto cam = SceneManager::CreateSceneObject<Camera>("Camera_1", "class_Camera");
 
-    auto r = SceneManager::CreateSceneObject<SceneObject>("Test", "class_SceneObject");
-    r->transform.position = {500, 500};
+    // auto r = SceneManager::CreateSceneObject<SceneObject>("Test", "class_SceneObject");
+    // r->transform.position = {500, 500};
 
     //create canvas
     // Benchmark _bench;
     // _bench.Start();
-    auto canvas = WidgetManager::CreateWidget<CanvasWidget>("Widget_1", "class_CanvasWidget");
+    // auto canvas = WidgetManager::CreateWidget<CanvasWidget>("Widget_1", "class_CanvasWidget");
     // _bench.Stop();
     // std::cout << _bench.GetTimeMicro() << " microseconds\n";
 
@@ -45,46 +50,46 @@ int main(int argc, char const *argv[])
     // add to viewport (calls Begin() method for canvas)
     //  WidgetManager::AddToViewport(canvas);
 
-    auto container = WidgetManager::CreateWidget<HorizontalBox>("Container_1", "class_Container");
-    container->SetPosition({Render::GetMonitorWidth() / 2.0f,
-                            Render::GetMonitorHeight() / 2.0f});
-    container->SetSize({1440, Render::GetMonitorHeight() / 2.0f});
-    container->SetElementsGap(100.f);
-    container->SetBackgroundColor(al_map_rgba(100, 100, 100, 20));
-    container->SetBorderRadius(20.f);
-    container->SetPivotPoint({0.5f, 0.5f});
-    container->SetElementsAlignment(Alignment::UpperLeft);
+    // auto container = WidgetManager::CreateWidget<HorizontalBox>("Container_1", "class_Container");
+    // container->SetPosition({Render::GetMonitorWidth() / 2.0f,
+    //                         Render::GetMonitorHeight() / 2.0f});
+    // container->SetSize({1440, Render::GetMonitorHeight() / 2.0f});
+    // container->SetElementsGap(100.f);
+    // container->SetBackgroundColor(al_map_rgba(100, 100, 100, 20));
+    // container->SetBorderRadius(20.f);
+    // container->SetPivotPoint({0.5f, 0.5f});
+    // container->SetElementsAlignment(Alignment::UpperLeft);
 
-    auto text1 = WidgetManager::CreateWidget<TextWidget>("TextWidget_1", "class_TextWidget");
-    text1->SetFont(EngineFonts::Ubuntu30R);
-    text1->SetText("Dasha");
-    text1->SetPivotPoint({0.5f, 0.5f});
-    text1->SetSize({200, 100});
+    // auto text1 = WidgetManager::CreateWidget<TextWidget>("TextWidget_1", "class_TextWidget");
+    // text1->SetFont(EngineFonts::Ubuntu30R);
+    // text1->SetText("Dasha");
+    // text1->SetPivotPoint({0.5f, 0.5f});
+    // text1->SetSize({200, 100});
 
-    auto text2 = WidgetManager::CreateWidget<TextWidget>("TextWidget_2", "class_TextWidget");
-    text2->SetFont(EngineFonts::Ubuntu30R);
-    text2->SetText("Dasha");
-    text2->SetPivotPoint({0.5f, 0.5f});
-    text2->SetSize({200, 80});
+    // auto text2 = WidgetManager::CreateWidget<TextWidget>("TextWidget_2", "class_TextWidget");
+    // text2->SetFont(EngineFonts::Ubuntu30R);
+    // text2->SetText("Dasha");
+    // text2->SetPivotPoint({0.5f, 0.5f});
+    // text2->SetSize({200, 80});
 
-    auto text3 = WidgetManager::CreateWidget<TextWidget>("TextWidget_3", "class_TextWidget");
-    text3->SetFont(EngineFonts::Ubuntu30R);
-    text3->SetText("Dasha");
-    text3->SetPivotPoint({0.5f, 0.5f});
-    text3->SetSize({200, 600});
+    // auto text3 = WidgetManager::CreateWidget<TextWidget>("TextWidget_3", "class_TextWidget");
+    // text3->SetFont(EngineFonts::Ubuntu30R);
+    // text3->SetText("Dasha");
+    // text3->SetPivotPoint({0.5f, 0.5f});
+    // text3->SetSize({200, 600});
 
-    auto text4 = WidgetManager::CreateWidget<TextWidget>("TextWidget_3", "class_TextWidget");
-    text4->SetFont(EngineFonts::Ubuntu30R);
-    text4->SetText("Dasha");
-    text4->SetPivotPoint({0.5f, 0.5f});
-    text4->SetSize({200, 50});
+    // auto text4 = WidgetManager::CreateWidget<TextWidget>("TextWidget_3", "class_TextWidget");
+    // text4->SetFont(EngineFonts::Ubuntu30R);
+    // text4->SetText("Dasha");
+    // text4->SetPivotPoint({0.5f, 0.5f});
+    // text4->SetSize({200, 50});
 
-    container->AttachChild(text1);
-    container->AttachChild(text2);
-    container->AttachChild(text3);
-    container->AttachChild(text4);
+    // container->AttachChild(text1);
+    // container->AttachChild(text2);
+    // container->AttachChild(text3);
+    // container->AttachChild(text4);
 
-    WidgetManager::AddToViewport(container);
+    // WidgetManager::AddToViewport(container);
 
     // now we can find widget on the screen
     //  std::cout << (WidgetManager::FindWidgetInViewport<CanvasWidget>("Widget_1", "class_CanvasWidget"))->GetName() << "\n";

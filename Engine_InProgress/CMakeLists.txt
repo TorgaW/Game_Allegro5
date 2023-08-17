@@ -14,6 +14,9 @@ EngineDebugger/EngineDebugger.cpp
 SceneManager/SceneManager.cpp
 ShaderManager/ShaderManager.cpp
 Transforms/Transform.cpp
+Camera/Camera.cpp
+WorldGeneration/Chunk/Chunk.cpp
+WorldGeneration/WorldLoader/WorldLoader.cpp
 BitmapManager/BitmapManager.cpp
 Game/Game.cpp)
 
@@ -38,4 +41,10 @@ target_link_libraries(BC_GAME_PROJECT_ENGINE ${ALLEGRO5_LIBRARIES})
 
 target_include_directories(BC_GAME_PROJECT_ENGINE PUBLIC ${ALLEGRO5_INCLUDE_DIRS} ".")
 
-file(COPY "Resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+# configure_file("Resources" ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+
+add_custom_command(
+        TARGET BC_GAME_PROJECT_ENGINE PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_SOURCE_DIR}/Resources
+                ${CMAKE_CURRENT_BINARY_DIR}/Resources)
