@@ -16,11 +16,13 @@ private:
     int chunks_draw_distance {3};
     float far_chunks_mult {2.0f};
     int chunk_square_axis_size {0}; //how many chunks in horizontal line
-    float chunk_size {512.0f};
-    float chunk_draw_scale {4.0f};
+    static inline float chunk_size {512.0f};
+    static inline float chunk_draw_scale {4.0f};
 
     Vec2 last_spotted_camera_position {100000.0f, 100000.0f};
     float camera_max_delta_trigger = 256.0f; // 1/4 of the chunk
+
+    std::vector<Ref<SceneObject>> objects_buffer;
 public:
 
     /**
@@ -47,6 +49,10 @@ public:
 
 public:
     void DebugChunks();
+
+    static Vec2i GetChunkId(Vec2 position);
+
+    void AddObjectToWorld(Ref<SceneObject> object);
 
 public:
     WorldLoader(const std::string& _obj_class, const ObjectSignature& obj_sign) : 

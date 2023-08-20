@@ -158,4 +158,5 @@ void Game::EndGame()
     al_destroy_event_queue(game_event_queue);
     al_destroy_display(game_display);
     al_use_shader(nullptr);
+    MemoryPool::ClearMemory();
 }

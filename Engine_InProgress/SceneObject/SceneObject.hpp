@@ -9,13 +9,16 @@
 class SceneObject : public Object
 {
 private:
-    ALLEGRO_SHADER* scene_object_shader {nullptr};
-    ALLEGRO_BITMAP* scene_object_bitmap {nullptr};
+    Shader* scene_object_shader {nullptr};
+    Bitmap* scene_object_bitmap {nullptr};
 
 public:
 
     Transform transform;
     Rect2 bounds;
+
+    Vec2i chain_chunk_id;
+    bool in_chunk {false};
 
     bool is_object_hidden {false};
 
@@ -38,7 +41,9 @@ public:
     /**
      * @brief called every frame after Update(). used to draw graphics.
      */
-    virtual void Draw(float delta){};
+    virtual void Draw(float delta){
+        al_draw_circle(transform.position.x, transform.position.y, 2.0f, EngineColors::black, 5.0f);
+    };
 
     /**
      * @brief called once when object marked as pending kill. in other words - before destruction.

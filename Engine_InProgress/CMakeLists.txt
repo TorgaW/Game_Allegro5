@@ -15,6 +15,7 @@ SceneManager/SceneManager.cpp
 ShaderManager/ShaderManager.cpp
 Transforms/Transform.cpp
 Camera/Camera.cpp
+Algo/QuadTree.cpp
 WorldGeneration/Chunk/Chunk.cpp
 WorldGeneration/WorldLoader/WorldLoader.cpp
 BitmapManager/BitmapManager.cpp

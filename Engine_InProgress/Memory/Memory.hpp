@@ -105,6 +105,7 @@ public:
     size_t last_allocated {0u}; //index of the last allocated object
     int storage_id {-1};
     void *last_allocated_obj {nullptr};
+    bool is_cleared {false};
 public:
     ObjectMemPool(int pool_id) : storage_id(pool_id) {};
     ~ObjectMemPool();
@@ -156,6 +157,8 @@ public:
         }
         return Ref<_T>();
     }
+
+    void ClearPool();
 
     void PrintData(){};
 };
@@ -209,6 +212,8 @@ public:
     static bool IsSpaceAvailable(std::string obj_class);
 
     static void DebugMemory();
+
+    static void ClearMemory();
 
 };
 

@@ -4,6 +4,8 @@
 // #include "../STD_DefaultInclude.hpp"
 #include "../SceneObject/SceneObject.hpp"
 
+class WorldLoader;
+
 class Scene
 {
 private:

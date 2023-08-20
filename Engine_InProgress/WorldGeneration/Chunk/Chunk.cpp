@@ -117,4 +117,15 @@ void Chunk::DebugChunk()
     al_draw_rectangle(chunk_bounds.p00.x, chunk_bounds.p00.y, chunk_bounds.p11.x, chunk_bounds.p11.y, EngineColors::red, 10.0);
     al_draw_circle(chunk_global_cen.x, chunk_global_cen.y, 2.0f, EngineColors::red, 5.0f);
     al_draw_circle(chunk_global_pos.x, chunk_global_pos.y, 2.0f, EngineColors::red, 20.0f);
+    chunk_collision_quad_tree.DebugQuadTree();
+}
+
+void Chunk::UpdateChunkCollision()
+{
+    chunk_collision_quad_tree.Clear();
+    chunk_collision_quad_tree = QuadTree(chunk_bounds);
+    for (size_t i = 0; i < chunk_objects_vector.size(); i++)
+    {
+        chunk_collision_quad_tree.InsertPoint(chunk_objects_vector[i]->transform.position);
+    }
 }

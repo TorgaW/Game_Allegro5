@@ -2,8 +2,8 @@
 
 ObjectMemPool::~ObjectMemPool()
 {
-    delete begin;
-    delete b_array;
+    // delete begin;
+    // delete b_array;
 }
 
 void ObjectMemPool::Allocate(std::string obj_class, size_t class_size)
@@ -59,6 +59,16 @@ void *ObjectMemPool::AllocateObject()
     return nullptr;
 }
 
+void ObjectMemPool::ClearPool()
+{
+    if(!is_cleared)
+    {
+        delete begin;
+        delete b_array;
+        is_cleared = true;
+    }
+}
+
 void *MemoryPool::AllocateObject(std::string obj_class, size_t class_size)
 {
     auto mem_pool = object_pools.find(obj_class);
@@ -107,4 +117,15 @@ void MemoryPool::DebugMemory()
         EngineDebugger::PrintDebugMessage(key + ": " + std::to_string(value[0].max_objects * value[0].byte_size * value.size()) + " bytes; chunks: " + std::to_string(value.size()), al_map_rgb(255, 255, 0), 0.0f, 99999);
     }
     EngineDebugger::PrintDebugMessage("Memory pool: " + std::to_string(pool_size) + " bytes", al_map_rgb(255, 255, 0), 0.0f, 99998);
+}
+
+void MemoryPool::ClearMemory()
+{
+    for (auto &[key, val] : object_pools)
+    {
+        for (size_t i = 0; i < val.size(); i++)
+        {
+            val[i].ClearPool();
+        }
+    }
 }

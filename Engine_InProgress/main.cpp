@@ -1,17 +1,29 @@
 // #include "Scene/Scene.hpp"
 // #include "SceneManager/SceneManager.hpp"
 #include "Engine.hpp"
-#include "Chunk_dev/Chunk_dev.hpp"
-#include "WorldGeneration/WorldLoader/WorldLoader.hpp"
-#include "Camera/Camera.hpp"
+
 
 int main(int argc, char const *argv[])
 {
     Game g;
     g.InitGame();
 
-    auto cc = SceneManager::CreateSceneObject<WorldLoader>("WorldLoader_1", "class_WorldLoader");
+    auto wl = SceneManager::CreateSceneObject<WorldLoader>("WorldLoader_1", "class_WorldLoader");
     auto cam = SceneManager::CreateSceneObject<Camera>("Camera_1", "class_Camera");
+    auto ph = SceneManager::CreateSceneObject<TestSceneObjectWithPhysics>("Test_phys", "class_TestSceneObjectWithPhysics");
+    
+
+    for (size_t i = 0; i < 60; i++)
+    {
+        auto t = SceneManager::CreateSceneObject<SceneObject>("aboba", "class_SceneObject");
+        t->transform.position.x += 10*i;
+        t->transform.position.y += 10*i;
+        wl->AddObjectToWorld(t);
+    }
+    
+
+
+    // ph->transform.position = {200.f, 200.f};
 
     // auto r = SceneManager::CreateSceneObject<SceneObject>("Test", "class_SceneObject");
     // r->transform.position = {500, 500};

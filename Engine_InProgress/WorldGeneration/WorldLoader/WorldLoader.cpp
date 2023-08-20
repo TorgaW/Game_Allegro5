@@ -77,6 +77,26 @@ void WorldLoader::Update(float delta)
         visible_chunks.erase(far_chunks[i]);
         loaded_chunks.erase(far_chunks[i]);
     }
+
+    for (size_t i = 0; i < objects_buffer.size(); i++)
+    {
+        if(loaded_chunks.contains(objects_buffer[i]->chain_chunk_id))
+        {
+            loaded_chunks[objects_buffer[i]->chain_chunk_id]->chunk_objects_vector.push_back(objects_buffer[i]);
+            objects_buffer[i]->in_chunk = true;
+        }
+    }
+    
+    objects_buffer.erase(std::remove_if(objects_buffer.begin(), objects_buffer.end(), 
+    [](Ref<SceneObject> obj)
+    {
+        return obj->in_chunk;
+    }), objects_buffer.end());
+
+    for (auto const &[key, val] : loaded_chunks)
+    {
+        val->UpdateChunkCollision();
+    }
     
     // DebugChunks();
 }
@@ -88,10 +108,10 @@ void WorldLoader::Draw(float delta)
         val->GenerateChunkTextures();
         val->DrawChunk();
     }
-    // for (const auto &[key, val] : loaded_chunks)
-    // {
-    //     val->DebugChunk();
-    // }
+    for (const auto &[key, val] : loaded_chunks)
+    {
+        val->DebugChunk();
+    }
 }
 
 void WorldLoader::DebugChunks()
@@ -105,4 +125,27 @@ void WorldLoader::DebugChunks()
     // }
     // ss << " Visible chunks: " << c;
     // EngineDebugger::PrintDebugMessage(ss.str(), al_map_rgb_f(1.0, 1.0, 0.0), 0.0);
+}
+
+Vec2i WorldLoader::GetChunkId(Vec2 position)
+{
+    Vec2i t_chunk_index;
+    t_chunk_index.x = std::floor(position.x / chunk_size / chunk_draw_scale);
+    t_chunk_index.y = int(-(position.y / chunk_size / chunk_draw_scale));
+    if(position.y < 0.0f) t_chunk_index.y += 1;
+    return t_chunk_index;
+}
+
+void WorldLoader::AddObjectToWorld(Ref<SceneObject> object)
+{
+    if(!object.IsValidStrict()) return;
+
+    object->chain_chunk_id = GetChunkId(object->transform.position);
+    if(loaded_chunks.contains(object->chain_chunk_id))
+    {
+        loaded_chunks[object->chain_chunk_id]->chunk_objects_vector.push_back(object);
+        object->in_chunk = true;
+    }
+    else
+        objects_buffer.push_back(object);
 }

@@ -6,6 +6,7 @@
 #include "../../Transforms/Primitive/Vector.hpp"
 #include "../../ShaderManager/ShaderManager.hpp"
 #include "../../Render/Render.hpp"
+#include "../../Algo/QuadTree.hpp"
 
 #define BC_WG_DEFAULT_CHUNK_TEX_SIZE 256.0f
 #define BC_WG_MAX_CHUNK_COORD_VALUE 2147483640
@@ -43,6 +44,10 @@ public:
 
     float *t_chunk_index = new float[2];
 
+    std::vector<Ref<SceneObject>> chunk_objects_vector{};
+
+    QuadTree chunk_collision_quad_tree {chunk_bounds};
+
 public:
     Chunk() : chunk_texture_size(BC_WG_DEFAULT_CHUNK_TEX_SIZE) {};
     Chunk(float chunk_tex_size) : chunk_texture_size(chunk_tex_size) {};
@@ -57,6 +62,8 @@ public:
     void DrawChunk();
     
     void DebugChunk();
+
+    void UpdateChunkCollision();
 };
 
 class MetaChunk
