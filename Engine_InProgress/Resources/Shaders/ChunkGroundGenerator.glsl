@@ -12,7 +12,7 @@ uniform int tile_size;
 const int max_octaves = 8;
 
 vec2 random_p(vec2 x) {
-    x = vec2(dot(x, vec2(91.2, seed + 3.92)), dot(x, vec2(seed - 1.38, seed + 2.45)));
+    x = vec2(dot(x, vec2(91.2, float(seed) + 3.92)), dot(x, vec2(float(seed) - 1.38, float(seed) + 2.45)));
     return -1.0 + 2.0*fract(sin(x) * 4.72);
 }
 
@@ -69,7 +69,7 @@ float istep(float edge, float x)
 void main(void) {
 
     float distortion_mask = ddFBM((uv + chunk_index)*10.0, 1.0);
-    float mask = texture2D(ground_mask, uv);
+    float mask = texture2D(ground_mask, uv).r;
     float water_step = step(0.6, mask);
     float grass_step = step(0.67, mask);
     float rock_step = step(0.999, mask);
