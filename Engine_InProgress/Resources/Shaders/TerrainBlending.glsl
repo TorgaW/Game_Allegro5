@@ -12,7 +12,7 @@ uniform float seed;
 
 vec2 random_p(vec2 x) {
     x = vec2(dot(x, vec2(3.92, 1.38)), dot(x, vec2(91.2, 8.53)));
-    return -1.0 + 2.0*fract(sin(x) * 3.27 * seed);
+    return -1.0 + 2.0*fract(sin(x) * 3.27);
 }
 
 vec2 random_v(vec2 x) {

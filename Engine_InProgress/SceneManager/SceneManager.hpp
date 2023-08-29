@@ -21,12 +21,18 @@ public:
 
     static void UpdateSceneObjects();
 
+    static inline Scene* GetCurrentScene() { return current_scene; };
+
     template<class T>
-    static Ref<T> CreateSceneObject(const std::string& name, const std::string& obj_class)
+    static Ref<T> CreateSceneObject(const std::string& name, const std::string& obj_class, bool add_to_scene = true)
     {
         static_assert(std::is_base_of<SceneObject, T>::value, "Scene manager creation error: must be SceneObject at least.");
         auto t = ObjectManager::CreateObject<T>(name, obj_class);
-        current_scene->AddSceneObject(t);
+        if(add_to_scene)
+        {
+            current_scene->AddSceneObject(t);
+            t->is_on_scene = true;
+        }
         return t;
     };
 
@@ -36,6 +42,16 @@ public:
         static_assert(std::is_base_of<SceneObject, T>::value, "Scene manager copy error: must be SceneObject at least.");
         auto t = ObjectManager::CopyObject<T>(candidate, name);
         current_scene->AddSceneObject(t);
+        return t;
+    }
+
+    template<class T>
+    static bool DestroySceneObject(Ref<T> candidate)
+    {
+        static_assert(std::is_base_of<SceneObject, T>::value, "Scene manager destroy error: must be SceneObject at least.");
+        if(candidate.IsValidStrict() && candidate->is_on_scene == true) 
+            return false;
+        bool t = ObjectManager::DestroyObject<T>(candidate);
         return t;
     }
 

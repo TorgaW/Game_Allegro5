@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)  # CMake version check
 project(BC_GAME_PROJECT_ENGINE)       # Create project "BC_GAME_PROJECT_ENGINE"
 set(CMAKE_CXX_STANDARD 20)            # Enable c++20 standard
-
+# set(CMAKE_CXX_FLAGS -fsanitize=address)
 FIND_PACKAGE(PkgConfig REQUIRED)
 
 set(CORE
@@ -16,8 +16,10 @@ ShaderManager/ShaderManager.cpp
 Transforms/Transform.cpp
 Camera/Camera.cpp
 Algo/QuadTree.cpp
-WorldGeneration/Chunk/Chunk.cpp
-WorldGeneration/WorldLoader/WorldLoader.cpp
+# WorldGeneration/Chunk/Chunk.cpp
+# WorldGeneration/WorldLoader/WorldLoader.cpp
+World/Chunk/Chunk.cpp
+World/ChunkManager/ChunkManager.cpp
 BitmapManager/BitmapManager.cpp
 Game/Game.cpp)
 

@@ -24,6 +24,8 @@ public:
 
     bool is_affect_update {true};
 
+    bool is_on_scene {false};
+
 public:
 
     /**
@@ -41,9 +43,7 @@ public:
     /**
      * @brief called every frame after Update(). used to draw graphics.
      */
-    virtual void Draw(float delta){
-        al_draw_circle(transform.position.x, transform.position.y, 2.0f, EngineColors::black, 5.0f);
-    };
+    virtual void Draw(float delta){};
 
     /**
      * @brief called once when object marked as pending kill. in other words - before destruction.

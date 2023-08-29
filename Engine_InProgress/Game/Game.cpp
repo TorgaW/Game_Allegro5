@@ -23,7 +23,7 @@ void Game::InitGame()
     // al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 4, ALLEGRO_SUGGEST);
     // al_set_new_display_option(ALLEGRO_SAMPLES, 16, ALLEGRO_SUGGEST);
     // al_set_new_display_option(ALLEGRO_RENDER_METHOD, 1, ALLEGRO_SUGGEST);
-    al_set_new_display_option(ALLEGRO_SUPPORT_NPOT_BITMAP, 1, ALLEGRO_SUGGEST);
+    // al_set_new_display_option(ALLEGRO_SUPPORT_NPOT_BITMAP, 1, ALLEGRO_SUGGEST);
     game_display = al_create_display(1920, 1080);
 
     al_register_event_source(game_event_queue, al_get_keyboard_event_source());
@@ -49,6 +49,8 @@ void Game::InitGame()
     ShaderManager::LoadShader("Water", "Resources/Shaders/Water.glsl", ALLEGRO_SHADER_GLSL, ALLEGRO_PIXEL_SHADER);
     ShaderManager::LoadShader("Dirt", "Resources/Shaders/Dirt.glsl", ALLEGRO_SHADER_GLSL, ALLEGRO_PIXEL_SHADER);
     ShaderManager::LoadShader("TerrainBlending", "Resources/Shaders/TerrainBlending.glsl", ALLEGRO_SHADER_GLSL, ALLEGRO_PIXEL_SHADER);
+    ShaderManager::LoadShader("ChunkGroundMaskGenerator", "Resources/Shaders/ChunkGroundMaskGenerator.glsl", ALLEGRO_SHADER_GLSL, ALLEGRO_PIXEL_SHADER);
+    ShaderManager::LoadShader("ChunkGroundGenerator", "Resources/Shaders/ChunkGroundGenerator.glsl", ALLEGRO_SHADER_GLSL, ALLEGRO_PIXEL_SHADER);
     // ShaderManager::LoadShader("Terrain", "Resources/Shaders/Terrain.glsl", ALLEGRO_SHADER_GLSL, ALLEGRO_PIXEL_SHADER);
 
     // Render::SetGameWindowBounds({1920, 1080});

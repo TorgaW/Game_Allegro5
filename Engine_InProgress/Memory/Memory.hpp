@@ -98,7 +98,6 @@ public:
     char *end {nullptr}; //points to the end of the chunk.
     char *iterator {nullptr}; //can be used to iterate through chunk.
     size_t byte_size {0u}; //size of storing class in bytes.
-    // std::vector<bool> b_array; //indicators for allocation.
     bool *b_array {nullptr}; //indicators for allocation.
     size_t max_objects {0u};
     size_t allocated {0u};

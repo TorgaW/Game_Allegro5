@@ -5,7 +5,7 @@
 #include "UI/UI.hpp"
 #include "Game/Game.hpp"
 #include "Benchmark/Benchmark.hpp"
-#include "WorldGeneration/WorldLoader/WorldLoader.hpp"
+#include "World/ChunkManager/ChunkManager.hpp"
 #include "Camera/Camera.hpp"
 #include "TestObjects/TestSceneObjectWithPhysics.hpp"
 
