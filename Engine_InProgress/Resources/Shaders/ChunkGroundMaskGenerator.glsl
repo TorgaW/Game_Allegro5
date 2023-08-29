@@ -11,7 +11,7 @@ uniform int seed;
 const int max_octaves = 8;
 
 vec2 random_p(vec2 x) {
-    x = vec2(dot(x, vec2(3.92, seed + 1.38)), dot(x, vec2(seed - 91.2, seed + 8.53)));
+    x = vec2(dot(x, vec2(3.92, float(seed) + 1.38)), dot(x, vec2(float(seed) - 91.2, float(seed) + 8.53)));
     return -1.0 + 2.0*fract(sin(x) * 3.27);
 }
 
